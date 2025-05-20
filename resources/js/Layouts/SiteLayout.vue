@@ -8,11 +8,15 @@ const page = usePage()
 
 <template>
 
-<nav class="bg-white border-gray-200 dark:bg-gray-900">
+<nav class="border-indigo-700 bg-indigo-950 dark:bg-gray-900">
   <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
-  <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-      <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+  <a href="https://tk.edueva.net/" class="flex items-center space-x-3 rtl:space-x-reverse">
+    <img
+  src="/images/edueva_logo1.png"
+  class="h-8"
+  alt="EDUEVA Logo"
+/>
+      <span class="self-center text-2xl font-semibold text-gray-200 whitespace-nowrap dark:text-white">TK.EDUEVA.NET</span>
   </a>
   <div class="flex items-center space-x-1 md:order-2 md:space-x-0 rtl:space-x-reverse">
     <button
@@ -89,27 +93,27 @@ const page = usePage()
     </button>
   </div>
   <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-language">
-    <ul class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+    <ul class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-indigo-950 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
       <li>
-        <Link :href="route('home')" :class="{'font-bold text-purple-600': page.component === 'Home'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">หน้าหลัก</Link>
+        <Link :href="route('home')" :class="{'font-bold text-indigo-400': page.component === 'Home'}" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">หน้าหลัก</Link>
       </li>
       <li>
-        <Link :href="route('about')" :class="{'font-bold text-purple-600': page.component === 'About'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">เกี่ยวกับเรา</Link>
+        <Link :href="route('about')" :class="{'font-bold text-indigo-400': page.component === 'About'}" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">เกี่ยวกับเรา</Link>
       </li>
       <li>
-        <Link :href="route('user')"  :class="{'font-bold text-purple-600': page.component === 'User'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ข้อมูลผู้ใช้</Link>
+        <Link :href="route('user')"  :class="{'font-bold text-indigo-400': page.component === 'User'}" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ข้อมูลผู้ใช้</Link>
       </li>
       <li>
-        <Link :href="route('teachers')"  :class="{'font-bold text-purple-600': page.component === 'Teacher'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ครู</Link>
+        <Link :href="route('teachers')"  :class="{'font-bold text-indigo-400': page.component === 'Teacher'}" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ครู</Link>
       </li>
       <li>
-        <Link :href="route('students')"  :class="{'font-bold text-purple-600': page.component === 'Student'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">นักเรียน</Link>
+        <Link :href="route('students')"  :class="{'font-bold text-indigo-400': page.component === 'Student'}" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">นักเรียน</Link>
       </li>
       <li>
-        <Link :href="route('register')"  class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ลงทะเบียน</Link>
+        <Link :href="route('register')"  class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ลงทะเบียน</Link>
       </li>
       <li>
-        <Link :href="route('login')" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">เข้าสู่ระบบ</Link>
+        <Link :href="route('login')" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">เข้าสู่ระบบ</Link>
       </li>
 
     </ul>
