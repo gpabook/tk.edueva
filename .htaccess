@@ -1,0 +1,18 @@
+# ROOT .htaccess
+# Redirect all requests into the public/ folder
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If the request already starts with /public/, do nothing
+    RewriteCond %{REQUEST_URI} !^/public/
+    # Otherwise rewrite to public/<requested_path>
+    RewriteRule ^(.*)$ /public/$1 [L]
+</IfModule>
+
+# Disable directory listings
+Options -Indexes
+
+# Deny access to hidden files (e.g., .env, .gitignore)
+<FilesMatch "^\..*">
+    Require all denied
+</FilesMatch>

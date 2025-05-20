@@ -1,2 +1,15 @@
-*
-!.gitignore
+# Laravel & Node deps
+/vendor
+/node_modules
+
+# Laravel specific
+/public/hot
+/storage/*.key
+
+# Environment
+/.env
+/.env.backup
+
+# IDE + OS
+/.idea
+.DS_Store
