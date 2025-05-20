@@ -27,4 +27,14 @@ class HomeController extends Controller
              'users' => $users
          ]); // User.vue
     }
+
+    public function student() {
+        return Inertia::render('Student'); //
+    }
+
+
+    public function teacher() {
+        return Inertia::render('Teacher'); //
+    }
+
 }

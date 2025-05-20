@@ -8,9 +8,6 @@ const page = usePage()
 
 <template>
 
-
-
-
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
   <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
   <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -18,10 +15,31 @@ const page = usePage()
       <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
   </a>
   <div class="flex items-center space-x-1 md:order-2 md:space-x-0 rtl:space-x-reverse">
-      <button type="button" data-dropdown-toggle="language-dropdown-menu" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
-        <svg class="w-5 h-5 rounded-full me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 3900 3900"><path fill="#b22234" d="M0 0h7410v3900H0z"/><path d="M0 450h7410m0 600H0m0 600h7410m0 600H0m0 600h7410m0 600H0" stroke="#fff" stroke-width="300"/><path fill="#3c3b6e" d="M0 0h2964v2100H0z"/><g fill="#fff"><g id="d"><g id="c"><g id="e"><g id="b"><path id="a" d="M247 90l70.534 217.082-184.66-134.164h228.253L176.466 307.082z"/><use xlink:href="#a" y="420"/><use xlink:href="#a" y="840"/><use xlink:href="#a" y="1260"/></g><use xlink:href="#a" y="1680"/></g><use xlink:href="#b" x="247" y="210"/></g><use xlink:href="#c" x="494"/></g><use xlink:href="#d" x="988"/><use xlink:href="#c" x="1976"/><use xlink:href="#e" x="2470"/></g></svg>
-        ภาษาไทย
-      </button>
+    <button
+  type="button"
+  data-dropdown-toggle="language-dropdown-menu"
+  class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+>
+  <svg
+    class="w-5 h-5 rounded-full me-3"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+  >
+    <!-- red stripe -->
+    <rect width="512" height="512" fill="#ed2939"/>
+    <!-- white stripe -->
+    <rect y="102.4" width="512" height="51.2" fill="#fff"/>
+    <!-- blue central stripe -->
+    <rect y="153.6" width="512" height="204.8" fill="#0d1bc5"/>
+    <!-- white stripe -->
+    <rect y="358.4" width="512" height="51.2" fill="#fff"/>
+    <!-- red stripe -->
+    <rect y="409.6" width="512" height="102.4" fill="#ed2939"/>
+  </svg>
+  ภาษาไทย
+</button>
+
       <!-- Dropdown -->
       <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700" id="language-dropdown-menu">
         <ul class="py-2 font-medium" role="none">
@@ -32,7 +50,34 @@ const page = usePage()
                 English
               </div>
             </a>
-        </li>
+          </li>
+          <li>
+  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+     role="menuitem">
+    <div class="inline-flex items-center">
+      <svg
+        class="h-3.5 w-3.5 rounded-full me-2"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+      >
+        <!-- red stripe -->
+        <rect width="512" height="512" fill="#ed2939"/>
+        <!-- white stripe -->
+        <rect y="102.4" width="512" height="51.2" fill="#fff"/>
+        <!-- blue central stripe -->
+        <rect y="153.6" width="512" height="204.8" fill="#0d1bc5"/>
+        <!-- white stripe -->
+        <rect y="358.4" width="512" height="51.2" fill="#fff"/>
+        <!-- red stripe -->
+        <rect y="409.6" width="512" height="102.4" fill="#ed2939"/>
+      </svg>
+      ภาษาไทย
+    </div>
+  </a>
+</li>
+
+
 
         </ul>
       </div>
@@ -46,36 +91,42 @@ const page = usePage()
   <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-language">
     <ul class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
       <li>
-        <a href="#" class="block px-3 py-2 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
+        <Link :href="route('home')" :class="{'font-bold text-purple-600': page.component === 'Home'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">หน้าหลัก</Link>
       </li>
       <li>
-        <a href="#" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">เกี่ยวกับเรา</a>
+        <Link :href="route('about')" :class="{'font-bold text-purple-600': page.component === 'About'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">เกี่ยวกับเรา</Link>
       </li>
       <li>
-        <a href="#" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ครู</a>
+        <Link :href="route('user')"  :class="{'font-bold text-purple-600': page.component === 'User'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ข้อมูลผู้ใช้</Link>
       </li>
       <li>
-        <a href="#" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">นักเรียน</a>
+        <Link :href="route('teachers')"  :class="{'font-bold text-purple-600': page.component === 'Teacher'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ครู</Link>
       </li>
       <li>
-        <a href="#" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">เข้าสู่ระบบ</a>
+        <Link :href="route('students')"  :class="{'font-bold text-purple-600': page.component === 'Student'}" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">นักเรียน</Link>
       </li>
+      <li>
+        <Link :href="route('register')"  class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ลงทะเบียน</Link>
+      </li>
+      <li>
+        <Link :href="route('login')" class="block px-3 py-2 text-gray-900 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">เข้าสู่ระบบ</Link>
+      </li>
+
     </ul>
   </div>
   </div>
 </nav>
-
 
 <div class="max-w-screen-xl p-4 mx-auto">
     <slot/>
 </div>
 
 
-<footer class="m-4 bg-white rounded-lg shadow-sm">
+<footer class="m-4 bg-white rounded-lg shadow-sm dark:bg-gray-900">
     <div class="w-full max-w-screen-xl p-4 mx-auto md:py-8">
 
-        <hr class="my-6 border-gray-200 sm:mx-auto lg:my-8" />
-        <span class="block text-sm text-gray-500 sm:text-center">© 2025 <a href="https://www.gpabook.net/" class="hover:underline">Prompt System Ltd.</a>. All Rights Reserved.</span>
+        <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2025 <a href="https://www.gpabook.net/" class="hover:underline">Prompt System Ltd.</a>. All Rights Reserved.</span>
     </div>
 </footer>
 
