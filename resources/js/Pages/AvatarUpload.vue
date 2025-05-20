@@ -32,7 +32,7 @@ function submit() {
     <div class="p-4">
       <h1 class="mb-4 space-x-8 text-xl text-gray-800 sm:-my-px">อัปโหลด Avatar</h1>
 
-      <form @submit.prevent="submit">
+      <form @submit.prevent="submit" enctype="multipart/form-data">
         <input type="file" @change="onFileChange" accept="image/*" />
 
         <div v-if="preview" class="mb-4 space-x-8 text-xl text-gray-800 sm:-my-px">

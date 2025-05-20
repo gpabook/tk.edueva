@@ -22,7 +22,7 @@ const page = usePage()
     <button
   type="button"
   data-dropdown-toggle="language-dropdown-menu"
-  class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+  class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-400 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
 >
   <svg
     class="w-5 h-5 rounded-full me-3"
@@ -134,9 +134,7 @@ const page = usePage()
     </div>
 </footer>
 
-
 </template>
-
 
 <style>
 
