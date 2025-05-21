@@ -10,18 +10,14 @@ class PermissionSeeder extends Seeder
 {
     public function run()
     {
-        // Define permissions (optional)
-        $perms = ['manage users', 'view reports', 'edit articles'];
-        foreach ($perms as $perm) {
+        foreach ([
+            'read roles',
+            'create roles',
+            'update roles',
+            'delete roles',
+        ] as $perm) {
             Permission::firstOrCreate(['name' => $perm]);
         }
 
-        // Define roles & give permissions
-        Role::firstOrCreate(['name' => 'superadmin'])
-            ->givePermissionTo(Permission::all());
-        Role::firstOrCreate(['name' => 'admin'])
-            ->givePermissionTo(['view reports', 'edit articles']);
-        Role::firstOrCreate(['name' => 'teacher']);
-        Role::firstOrCreate(['name' => 'student']);
     }
 }

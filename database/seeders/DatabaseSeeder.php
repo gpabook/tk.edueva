@@ -13,11 +13,15 @@ class DatabaseSeeder extends Seeder
     {
         // Call each of your other seeders here:
         $this->call([
-            UserSeeder::class,
+            //UserSeeder::class,
             //BankSystemSeeder::class,    // if you have one for bank data
             //BankAccountSeeder::class,
             //BankAccountLargeSeeder::class,
-            StudentBankAccountSeeder::class,
+            //StudentBankAccountSeeder::class,
+            RoleSeeder::class, // <--- Add this
+            PermissionSeeder::class,
+            RolePermissionSeeder::class,
+            UserSeeder::class,
             // …any others
         ]);
     }

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\UserRole; // Assuming you have this Enum
 use App\Models\BankAccount; // Import BankAccount model
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * User Model
@@ -20,7 +21,7 @@ use App\Models\BankAccount; // Import BankAccount model
  */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     protected $table = 'users';
 
