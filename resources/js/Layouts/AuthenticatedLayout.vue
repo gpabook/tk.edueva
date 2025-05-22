@@ -1,24 +1,19 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue'; // Ensure 'computed' is imported here
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link, usePage } from '@inertiajs/vue3'; // Import usePage to access shared props
+import { Link, usePage } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
-const page = usePage(); // Access shared Inertia props
+const page = usePage();
 
-// Helper to check permissions (assuming permissions are shared as an array of names)
 const can = (permissionName) => {
     return page.props.auth.user && page.props.auth.user.permissions ? page.props.auth.user.permissions.includes(permissionName) : false;
 };
 
-// Or, if you prefer to check by role:
-// const hasRole = (roleName) => {
-//     return page.props.auth.user && page.props.auth.user.roles ? page.props.auth.user.roles.includes(roleName) : false;
-// };
 </script>
 
 <template>
@@ -37,26 +32,16 @@ const can = (permissionName) => {
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
-                                >
-                                    Dashboard
-                                </NavLink>
-                                <NavLink
-                                    :href="route('avatar.update')"
-                                    :active="route().current('avatar.update')"
-                                >
-                                    UpdateAvatar
-                                </NavLink>
 
-                                <NavLink
-                                    v-if="can('read roles')"
-                                    :href="route('roles.index')"
-                                    :active="route().current('roles.*')"
-                                >
-                                    Roles
-                                </NavLink>
+                                   <Link :href="route('dashboard')" class="underline">
+      Dashboard
+    </Link>
+    <Link :href="route('permissions.index')" class="underline">
+      Permissions
+    </Link>
+    <Link :href="route('roles.index')" class="underline">
+      Roles
+    </Link>
                                 </div>
                         </div>
 
@@ -147,27 +132,36 @@ const can = (permissionName) => {
                     }"
                     class="sm:hidden"
                 >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            :href="route('avatar.update')"
-                            :active="route().current('avatar.update')"
-                        >
-                            UpdateAvatar
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            v-if="can('read roles')"
-                            :href="route('roles.index')"
-                            :active="route().current('roles.*')"
-                        >
-                            Roles
-                        </ResponsiveNavLink>
-                    </div>
+                <div class="pt-2 pb-3 space-y-1">
+  <ResponsiveNavLink
+    :href="route('dashboard')"
+    :active="route().current('dashboard')"
+  >
+    Dashboard
+  </ResponsiveNavLink>
+  <ResponsiveNavLink
+    :href="route('avatar.update')"
+    :active="route().current('avatar.update')"
+  >
+    Update Avatar
+  </ResponsiveNavLink>
+
+  <ResponsiveNavLink
+    v-if="can('read roles')"
+    :href="route('roles.index')"
+    :active="route().current('roles.*')"
+  >
+    Roles
+  </ResponsiveNavLink>
+
+  <ResponsiveNavLink
+    v-if="can('view permissions')"
+    :href="route('permissions.index')"
+    :active="route().current('permissions.*')"
+  >
+    Permissions
+  </ResponsiveNavLink>
+</div>
 
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="px-4">

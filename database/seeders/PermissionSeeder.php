@@ -10,14 +10,31 @@ class PermissionSeeder extends Seeder
 {
     public function run()
     {
-        foreach ([
-            'read roles',
-            'create roles',
-            'update roles',
-            'delete roles',
-        ] as $perm) {
-            Permission::firstOrCreate(['name' => $perm]);
+
+        // Permissions for managing Permissions
+        Permission::firstOrCreate(['name' => 'view permissions', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'create permissions', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'edit permissions', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'delete permissions', 'guard_name' => 'web']);
+
+        // Assign these to your superadmin/admin roles
+        $superAdminRole = Role::findByName('superadmin', 'web');
+        if ($superAdminRole) {
+            $superAdminRole->givePermissionTo([
+                'view permissions',
+                'create permissions',
+                'edit permissions',
+                'delete permissions',
+            ]);
         }
+
+        $adminRole = Role::findByName('admin', 'web');
+        if ($adminRole) {
+            // Maybe admin can only view or has limited permission management
+            $adminRole->givePermissionTo(['view permissions']);
+        }
+
+        $this->command->info('Permissions for Permission Management created and assigned.');
 
     }
 }

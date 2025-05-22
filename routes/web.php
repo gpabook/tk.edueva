@@ -4,6 +4,7 @@ use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,9 +30,8 @@ Route::middleware('auth')->group(function () {
 
 });
 
-// Routes for managing roles
+// Start Routes for managing roles
 Route::middleware('auth')->group(function () {
-        // Ensure users are authenticated
 
         // Group for role management, protected by 'superadmin' or 'admin' role
         Route::middleware(['role:superadmin|admin'])
@@ -48,5 +48,26 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+// End Routes for managing roles
+
+// start Routes for managing permission
+Route::middleware('auth')->group(function () {
+
+    // Group for Role and Permission management, protected by 'superadmin' or 'admin' role
+    // Adjust the outer middleware as per your needs (e.g., specific permission like 'access admin area')
+    Route::middleware(['role:superadmin|admin']) // Or a more specific permission
+        ->group(function () {
+
+            // Routes for managing Permissions
+            Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index')->middleware('permission:view permissions');
+            Route::get('permissions/create', [PermissionController::class, 'create'])->name('permissions.create')->middleware('permission:create permissions');
+            Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store')->middleware('permission:create permissions');
+            Route::get('permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit')->middleware('permission:edit permissions');
+            Route::put('permissions/{permission}', [PermissionController::class, 'update'])->name('permissions.update')->middleware('permission:edit permissions');
+            Route::delete('permissions/{permission}', [PermissionController::class, 'destroy'])->name('permissions.destroy')->middleware('permission:delete permissions');
+        });
+});
+
+// ...End for Permission
 
 require __DIR__.'/auth.php';
