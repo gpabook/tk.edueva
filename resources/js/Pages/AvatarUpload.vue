@@ -29,8 +29,15 @@ function submit() {
 }
 </script>
 <template>
-    <div class="p-4">
-      <h1 class="mb-4 space-x-8 text-xl text-gray-800 sm:-my-px">อัปโหลด Avatar</h1>
+   <div class="py-12">
+        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-xl font-bold">Upload Avatar</h1>
+      </div>
+
+      <div class="overflow-x-auto">
 
       <form @submit.prevent="submit" enctype="multipart/form-data">
         <input type="file" @change="onFileChange" accept="image/*" />
@@ -48,6 +55,10 @@ function submit() {
           {{ form.processing ? 'กำลังอัปโหลด...' : 'อัปโหลด' }}
         </button>
       </form>
+    </div>
+    </div>
+    </div>
+    </div>
     </div>
   </template>
 

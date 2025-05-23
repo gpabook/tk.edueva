@@ -33,15 +33,23 @@ const can = (permissionName) => {
 
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
 
-                                   <Link :href="route('dashboard')" class="underline">
+                                   <NavLink :href="route('dashboard')">
       Dashboard
-    </Link>
-    <Link :href="route('permissions.index')" class="underline">
+                                   </NavLink>
+    <NavLink
+      :href="route('avatar.update')"
+      :active="route().current('avatar.update')">
+      Update Avatar
+    </NavLink>
+    <NavLink :href="route('permissions.index')">
       Permissions
-    </Link>
-    <Link :href="route('roles.index')" class="underline">
+    </NavLink>
+    <NavLink :href="route('roles.index')">
       Roles
-    </Link>
+    </NavLink>
+    <NavLink :href="route('bank.user')">
+      Bank User
+    </NavLink>
                                 </div>
                         </div>
 
@@ -134,6 +142,7 @@ const can = (permissionName) => {
                 >
                 <div class="pt-2 pb-3 space-y-1">
   <ResponsiveNavLink
+   v-if="can('read roles')"
     :href="route('dashboard')"
     :active="route().current('dashboard')"
   >
@@ -160,6 +169,13 @@ const can = (permissionName) => {
     :active="route().current('permissions.*')"
   >
     Permissions
+  </ResponsiveNavLink>
+
+  <ResponsiveNavLink
+    :href="route('bank.user')"
+    :active="route().current('bank.user')"
+  >
+    Bank User
   </ResponsiveNavLink>
 </div>
 

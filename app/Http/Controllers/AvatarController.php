@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Response;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class AvatarController extends Controller
@@ -51,7 +54,8 @@ public function store(Request $request)
         Storage::disk('public')->delete($oldAvatar);
     }
     ////////////
-    return back()->with('success', 'อัปโหลดสำเร็จ');
+   // return back()->with('success', 'อัปโหลดสำเร็จ');
+    return Redirect::to('avatar.update');
 
 }
 }

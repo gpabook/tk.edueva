@@ -48,7 +48,7 @@
                                         {{ role.permissions_count }}
                                     </td>
                                     <td class="px-6 py-4 space-x-2 text-sm font-medium whitespace-nowrap">
-                                        <Link :href="route('roles.edit', role.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
+                                        <Link :href="route('roles.edit', role.id)" class="text-indigo-600 hover:text-indigo-900">Edit</Link>  |
                                         <button @click="confirmDeleteRole(role)" class="text-red-600 hover:text-red-900">Delete</button>
                                     </td>
                                 </tr>

@@ -9,29 +9,38 @@ use Inertia\Inertia;
 use TCPDF;
 use TCPDF_FONTS;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 
 class BankAccountController extends Controller
 {
+
+    public function bankuser() {
+
+                // will run 1 query for bank_accounts + 1 for users
+        $users = BankAccount::with('user')->paginate(20);
+       // $users = BankAccount::paginate(20);
+        //return $users;
+
+         return Inertia::render('Bank/User', [
+             'users' => $users
+         ]); // User.vue
+    }
     /**
      * แสดงบัญชีและรายการธุรกรรมของผู้ใช้
      */
-public function show()
+public function show($user_id)
 {
-    $user = Auth::user();
+    $user = User::findOrFail($user_id);
 
-    // fetch or create the bank account in one go
-    $account = BankAccount::firstOrCreate(
-        ['user_id' => $user->id],
-        ['balance' => 0]
-    );
-
-    // now $account is never null
-    $account->load('transactions');
+    // Then grab their bank account and load transactions
+    $account = $user->bankAccount     // or ->bankAccounts() if it's hasMany
+                     ->load('transactions');
 
     return Inertia::render('Bank/Account', [
         'account' => $account,
+        'acc_name' => $user->name,
     ]);
 }
 
@@ -87,9 +96,13 @@ public function show()
      * สร้างและดาวน์โหลด PDF Passbook
      */
 
-public function passbookPdf()
+public function passbookPdf($user_id)
 {
-    $account = Auth::user()->bankAccount->load('transactions');
+    $user = User::findOrFail($user_id);
+
+    // Then grab their bank account and load transactions
+    $account = $user->bankAccount     // or ->bankAccounts() if it's hasMany
+                     ->load('transactions');
 
     // 1) instantiate TCPDF
     $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);

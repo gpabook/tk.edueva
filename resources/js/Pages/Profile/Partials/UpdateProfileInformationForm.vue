@@ -28,7 +28,7 @@ const form = useForm({
     <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900">
-                Profile Information ======>> {{ preview }}
+                Profile Information
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
@@ -36,7 +36,6 @@ const form = useForm({
             </p>
         </header>
         <div v-if="preview" class="mb-4 space-x-8 text-xl text-gray-800 sm:-my-px">
-          <p>Preview:</p>
           <img :src="preview" class="object-cover w-24 h-24 rounded-full" />
         </div>
 

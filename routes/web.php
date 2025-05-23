@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\BankAccountController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,13 +22,37 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware('auth')->group(function () {
+
+    Route::middleware(['role:superadmin|admin|teacher|student'])
+    ->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/create', [AvatarController::class, 'create'])->name('avatar.update');
     Route::post('/store', [AvatarController::class, 'store'])->name('avatar.store');
+    });
+});
+Route::middleware('auth')->group(function () {
 
+    Route::middleware(['role:superadmin|admin|teacher'])
+    ->group(function () {
+
+        Route::get('/user', [BankAccountController::class, 'bankuser'])->name('bank.user');
+    // Bank account routes
+    Route::get('/bank/{user_id}', [BankAccountController::class, 'show'])
+         ->name('bank.account');
+    Route::post('/bank/deposit', [BankAccountController::class, 'deposit'])
+         ->name('bank.deposit');
+    Route::post('/bank/withdraw', [BankAccountController::class, 'withdraw'])
+         ->name('bank.withdraw');
+    Route::get('/bank/passbook/{user_id}', [BankAccountController::class, 'passbookPdf'])
+         ->name('bank.passbook.pdf');
+
+
+
+    });
 });
 
 // Start Routes for managing roles

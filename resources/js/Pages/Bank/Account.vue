@@ -1,7 +1,9 @@
 <script setup>
-import { Head, useForm } from '@inertiajs/vue3'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { Head, useForm} from '@inertiajs/vue3'
 import { ref } from 'vue'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+
+
 
 // Props passed from controller
 const props = defineProps({
@@ -31,14 +33,14 @@ function submitWithdraw() {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                My Bank Account
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                My Bank Account {{ $attrs.acc_name}} | user_id: {{ props.account.user_id }}
             </h2>
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <!-- Current Balance -->
                         <div class="mb-6">
@@ -50,11 +52,11 @@ function submitWithdraw() {
                             <h4 class="font-semibold">Deposit Funds</h4>
                             <form @submit.prevent="submitDeposit" class="flex flex-col space-y-2">
                                 <input v-model="depositForm.amount" type="number" step="0.01" placeholder="Amount"
-                                    class="border px-3 py-2 rounded" />
+                                    class="px-3 py-2 border rounded" />
                                 <input v-model="depositForm.description" type="text"
-                                    placeholder="Description (optional)" class="border px-3 py-2 rounded" />
+                                    placeholder="Description (optional)" class="px-3 py-2 border rounded" />
                                 <button type="submit" :disabled="depositForm.processing"
-                                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                    class="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600">
                                     Deposit
                                 </button>
                             </form>
@@ -65,11 +67,11 @@ function submitWithdraw() {
                             <h4 class="font-semibold">Withdraw Funds</h4>
                             <form @submit.prevent="submitWithdraw" class="flex flex-col space-y-2">
                                 <input v-model="withdrawForm.amount" type="number" step="0.01" placeholder="Amount"
-                                    class="border px-3 py-2 rounded" />
+                                    class="px-3 py-2 border rounded" />
                                 <input v-model="withdrawForm.description" type="text"
-                                    placeholder="Description (optional)" class="border px-3 py-2 rounded" />
+                                    placeholder="Description (optional)" class="px-3 py-2 border rounded" />
                                 <button type="submit" :disabled="withdrawForm.processing"
-                                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                    class="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600">
                                     Withdraw
                                 </button>
                             </form>
@@ -77,7 +79,7 @@ function submitWithdraw() {
 
                         <!-- Transactions List -->
                         <div>
-                            <h4 class="font-semibold mb-2">Transaction History</h4>
+                            <h4 class="mb-2 font-semibold">Transaction History</h4>
                             <table class="w-full text-left table-auto">
                                 <thead>
                                     <tr>
@@ -100,8 +102,8 @@ function submitWithdraw() {
 
                         <!-- Print Passbook -->
                         <div class="mt-6">
-                            <a :href="route('bank.passbook.pdf')" target="_blank"
-                                class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            <a :href="route('bank.passbook.pdf', props.account.user_id)" target="_blank"
+                                class="inline-block px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
                                 Print Passbook
                             </a>
                         </div>
