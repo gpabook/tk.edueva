@@ -5,6 +5,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import LanguageSwitcher from '@/Components/LanguageSwitcher.vue'; // 1. Import the component
 import { Link, usePage } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
@@ -18,7 +19,9 @@ const can = (permissionName) => {
 
 <template>
     <div>
+
         <div class="min-h-screen bg-gray-100">
+
             <nav class="bg-white border-b border-gray-100">
                 <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -36,24 +39,62 @@ const can = (permissionName) => {
                                    <NavLink :href="route('dashboard')">
       Dashboard
                                    </NavLink>
+
     <NavLink
+      v-if="can('update avatar')"
       :href="route('avatar.update')"
       :active="route().current('avatar.update')">
       Update Avatar
     </NavLink>
-    <NavLink :href="route('permissions.index')">
+    <NavLink
+      v-if="can('view banks')"
+      :href="route('bank.myaccount', $page.props.auth.user.id)"
+      :active="route().current('bank.myaccount')">
+      My BankAccount
+    </NavLink>
+    <NavLink
+    v-if="can('read permissions')"
+    :href="route('permissions.index')"
+    :active="route().current('permission.index')">
       Permissions
     </NavLink>
-    <NavLink :href="route('roles.index')">
+    <NavLink
+    v-if="can('read roles')"
+    :href="route('roles.index')"
+    :active="route().current('roles.index')">
       Roles
     </NavLink>
-    <NavLink :href="route('bank.user')">
+    <NavLink
+    v-if="can('read banks')"
+    :href="route('bank.user')"
+    :active="route().current('bank.user')">
       Bank User
     </NavLink>
-                                </div>
-                        </div>
+    <NavLink
+    v-if="can('manage classes')"
+    :href="route('class-levels.index')"
+    :active="route().current('class-levels.index')">
+      {{ $t('class_level_label') }}
+    </NavLink>
+    <NavLink
+    v-if="can('manage classes')"
+    :href="route('rooms.index')"
+    :active="route().current('rooms.index')">
+      Rooms
+    </NavLink>
+
+                            </div>
+
+
+
+                            </div>
+
+
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                            <div class="relative ms-3">
+            <LanguageSwitcher />
+            </div>
                             <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
@@ -190,7 +231,8 @@ const can = (permissionName) => {
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">
+                            <ResponsiveNavLink
+                            :href="route('profile.edit')">
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
@@ -216,4 +258,11 @@ const can = (permissionName) => {
             </main>
         </div>
     </div>
+    <footer class="m-4 bg-white rounded-lg shadow-sm dark:bg-gray-900">
+    <div class="w-full max-w-screen-xl p-4 mx-auto md:py-8">
+
+        <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2025 <a href="https://www.gpabook.net/" class="hover:underline">Prompt System Ltd.</a>. All Rights Reserved.</span>
+    </div>
+</footer>
 </template>

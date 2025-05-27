@@ -54,8 +54,8 @@ public function store(Request $request)
         Storage::disk('public')->delete($oldAvatar);
     }
     ////////////
-   // return back()->with('success', 'อัปโหลดสำเร็จ');
-    return Redirect::to('avatar.update');
+    return back()->with('success', 'อัปโหลดสำเร็จ');
+    //return Redirect::to('avatar.update');
 
 }
 }

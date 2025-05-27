@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\UserRole; // Assuming you have this Enum
 use App\Models\BankAccount; // Import BankAccount model
+use App\Models\ClassLevel;
+use App\Models\Room;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -34,6 +36,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'student_id',
+        'room_id',
         'name',
         'email',
         'password',
@@ -64,10 +68,21 @@ class User extends Authenticatable
         return [
         'email_verified_at' => 'datetime', // Casts to a Carbon date/time object
         'password'          => 'hashed',   // Automatically hashes passwords when set (Laravel 10+)
-        'role'              => UserRole::class, // Casts 'role' to the UserRole Enum
+        //'role'              => UserRole::class, // Casts 'role' to the UserRole Enum
+        'role'              => \App\Enums\UserRole::class,
         'status'            => 'integer',  // Casts 'status' to an integer
     ];
 }
+
+
+    protected static function booted()
+{
+  static::saved(function (User $user) {
+    // เซ็ต Role ใน Spatie ให้ตรงกับ enum ที่เซ็ตมา
+    $user->syncRoles([$user->role->name]);
+  });
+}
+
 
         // Optionally, an accessor for full URL:
     public function getAvatarUrlAttribute()
@@ -87,4 +102,34 @@ class User extends Authenticatable
         return $this->hasOne(BankAccount::class);
     }
     // --- End Bank Account Relationship ---
+
+    // ถ้าต้องการดึงระดับชั้นจาก user เลย
+    public function classLevel()
+    {
+        return $this->hasOneThrough(
+            ClassLevel::class,
+            Room::class,
+            'id',            // rooms.id
+            'id',            // class_levels.id
+            'room_id',       // users.room_id
+            'class_level_id' // rooms.class_level_id
+        );
+    }
+
+// นักเรียนอยู่ในห้องไหน
+public function room()
+{
+    return $this->belongsTo(Room::class);
+}
+
+// ถ้าเป็นครู ก็เอาห้องที่ตัวเองเป็นที่ปรึกษา
+public function advisingRooms()
+{
+    return $this->belongsToMany(
+        Room::class,
+        'room_advisor',
+        'user_id',
+        'room_id'
+    )->withTimestamps();
+}
 }

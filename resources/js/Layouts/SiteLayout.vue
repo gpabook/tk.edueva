@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3'
 import { usePage } from '@inertiajs/vue3'
 
+
 const page = usePage()
 
 </script>
@@ -101,7 +102,7 @@ const page = usePage()
         <Link :href="route('about')" :class="{'font-bold text-indigo-400': page.component === 'About'}" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">เกี่ยวกับเรา</Link>
       </li>
       <li>
-        <Link :href="route('user')"  :class="{'font-bold text-indigo-400': page.component === 'User'}" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ข้อมูลผู้ใช้</Link>
+        <Link :href="route('userall')"  :class="{'font-bold text-indigo-400': page.component === 'User'}" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ข้อมูลผู้ใช้</Link>
       </li>
       <li>
         <Link :href="route('teachers')"  :class="{'font-bold text-indigo-400': page.component === 'Teacher'}" class="block px-3 py-2 text-gray-200 rounded-sm md:p-0 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">ครู</Link>

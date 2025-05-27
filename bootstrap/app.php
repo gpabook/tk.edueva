@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Spatie\Permission\Middleware\RoleMiddleware; // <--- Add this
 use Spatie\Permission\Middleware\PermissionMiddleware; // <--- Add this
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware; // <--- Add this
+use App\Http\Middleware\SetLocale; // Make sure to import your SetLocale middleware
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
+            SetLocale::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);

@@ -16,17 +16,43 @@ use Illuminate\Support\Facades\DB;
 class BankAccountController extends Controller
 {
 
-    public function bankuser() {
+public function bankuser(Request $request)
+{
+    $search = $request->input('search');
 
-                // will run 1 query for bank_accounts + 1 for users
-        $users = BankAccount::with('user')->paginate(20);
-       // $users = BankAccount::paginate(20);
-        //return $users;
+    $users = BankAccount::with('user')
+        ->when($search, function($query, $search) {
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('name',  'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        })
+        ->orderBy('id', 'asc')
+        ->paginate(20)
+        ->withQueryString(); // เก็บ ?search=… ไว้ในลิงก์ pagination
 
-         return Inertia::render('Bank/User', [
-             'users' => $users
-         ]); // User.vue
-    }
+    return Inertia::render('Bank/User', [
+        'users'   => $users,
+        'filters' => ['search' => $search],
+    ]);
+}
+
+    /**
+     * แสดงบัญชีและรายการธุรกรรมของผู้ใช้ให้เจ้าของบัญชีดู
+     */
+public function showme($user_id)
+{
+    $user = User::findOrFail($user_id);
+
+    // Then grab their bank account and load transactions
+    $account = $user->bankAccount     // or ->bankAccounts() if it's hasMany
+                     ->load('transactions');
+
+    return Inertia::render('Bank/Accountme', [
+        'account' => $account,
+        'acc_name' => $user->name,
+    ]);
+}
     /**
      * แสดงบัญชีและรายการธุรกรรมของผู้ใช้
      */
@@ -49,13 +75,20 @@ public function show($user_id)
      */
     public function deposit(Request $request)
     {
+        // 1) Validate amount, description, AND the user_id from your hidden input
         $data = $request->validate([
+            'user_id'     => 'required|exists:users,id',
             'amount'      => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
         ]);
 
-        $account = Auth::user()->bankAccount;
+        // 2) Lookup that user's bank account
+      //$account = Auth::user()->bankAccount;
+        $account = BankAccount::where('user_id', $data['user_id'])
+                ->firstOrFail();
 
+        // 3) Perform your transaction
+/////////////////////////////////////////////////
         DB::transaction(function () use ($account, $data) {
             $account->increment('balance', $data['amount']);
             $account->transactions()->create([
@@ -73,7 +106,13 @@ public function show($user_id)
      */
     public function withdraw(Request $request)
     {
-        $account = Auth::user()->bankAccount;
+        $data_uid = $request->validate([
+            'user_id'     => 'required|exists:users,id',
+        ]);
+       // $account = Auth::user()->bankAccount;
+
+       $account = BankAccount::where('user_id', $data_uid['user_id'])
+       ->firstOrFail();
 
         $data = $request->validate([
             'amount'      => ['required','numeric','min:0.01','max:' . $account->balance],

@@ -11,7 +11,10 @@ const props = defineProps({
 })
 
 // Deposit form
-const depositForm = useForm({ amount: '', description: '' })
+const depositForm = useForm({
+    user_id: props.account.user_id,    // ← initialize it here
+    amount: '',
+    description: '' })
 function submitDeposit() {
     depositForm.post(route('bank.deposit'), {
         onSuccess: () => depositForm.reset()
@@ -19,12 +22,17 @@ function submitDeposit() {
 }
 
 // Withdraw form
-const withdrawForm = useForm({ amount: '', description: '' })
+const withdrawForm = useForm({
+    user_id: props.account.user_id,    // ← initialize it here
+    amount: '',
+    description: ''
+     })
 function submitWithdraw() {
     withdrawForm.post(route('bank.withdraw'), {
         onSuccess: () => withdrawForm.reset()
     })
 }
+
 </script>
 
 <template>
@@ -44,13 +52,21 @@ function submitWithdraw() {
                     <div class="p-6 text-gray-900">
                         <!-- Current Balance -->
                         <div class="mb-6">
-                            <h3 class="text-lg font-medium">Balance: {{ props.account.balance }}</h3>
+                            <h3 class="text-lg font-medium">Balance: {{ Number(props.account.balance)
+       .toLocaleString('en-US', {
+         minimumFractionDigits: 2,
+         maximumFractionDigits: 2
+       })
+     + ' บาท'
+  }}</h3>
+
                         </div>
 
                         <!-- Deposit Form -->
                         <div class="mb-4">
                             <h4 class="font-semibold">Deposit Funds</h4>
                             <form @submit.prevent="submitDeposit" class="flex flex-col space-y-2">
+                                <input type="hidden" v-model="depositForm.user_id" />
                                 <input v-model="depositForm.amount" type="number" step="0.01" placeholder="Amount"
                                     class="px-3 py-2 border rounded" />
                                 <input v-model="depositForm.description" type="text"
@@ -66,6 +82,7 @@ function submitWithdraw() {
                         <div class="mb-6">
                             <h4 class="font-semibold">Withdraw Funds</h4>
                             <form @submit.prevent="submitWithdraw" class="flex flex-col space-y-2">
+                                <input type="hidden" v-model="withdrawForm.user_id" />
                                 <input v-model="withdrawForm.amount" type="number" step="0.01" placeholder="Amount"
                                     class="px-3 py-2 border rounded" />
                                 <input v-model="withdrawForm.description" type="text"

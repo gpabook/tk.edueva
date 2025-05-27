@@ -20,11 +20,11 @@ class HomeController extends Controller
 
     public function user() {
         //$users = User::all();
-        $users = User::paginate(10);
-        //return $users;
+        $users_all = User::paginate(10);
+
 
          return Inertia::render('User', [
-             'users' => $users
+             'users' => $users_all
          ]); // User.vue
     }
 

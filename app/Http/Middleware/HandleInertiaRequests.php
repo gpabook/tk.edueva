@@ -5,6 +5,9 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\File; // For loading translations
+use Illuminate\Support\Facades\Cache; // Optional: for caching translations
 
 class HandleInertiaRequests extends Middleware
 {
@@ -50,6 +53,31 @@ class HandleInertiaRequests extends Middleware
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+                    // Add locale and translations
+                    'locale' => fn () => App::getLocale(),
+                    'translations' => function () {
+                        $locale = App::getLocale();
+                        $cacheKey = "translations_{$locale}";
+
+                        // Cache translations for better performance in production
+                        return Cache::rememberForever($cacheKey, function () use ($locale) {
+                            $phpTranslations = [];
+                            $jsonTranslations = [];
+
+                            $phpLangPath = lang_path("{$locale}/messages.php"); // Assuming 'messages.php'
+                            $jsonLangPath = lang_path("{$locale}.json");
+
+                            if (File::exists($phpLangPath)) {
+                                $phpTranslations = include $phpLangPath;
+                            }
+                            if (File::exists($jsonLangPath)) {
+                                $jsonTranslations = json_decode(File::get($jsonLangPath), true);
+                            }
+                            return array_merge($phpTranslations, $jsonTranslations);
+                        });
+                    },
+                    // Share available locales for the switcher component
+                    'available_locales' => fn () => config('app.available_locales'),
         ]);
     }
 }

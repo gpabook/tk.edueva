@@ -1,0 +1,17 @@
+{
+    "welcome": "Welcome to our application!",
+    "dashboard": "Dashboard",
+    "manage_roles": "Manage Roles",
+    "manage_permissions": "Manage Permissions",
+    "home": "Home",
+    "profile": "Profile",
+    "logout": "Log Out",
+    "login_title": "Log in",
+    "email_label": "Email",
+    "password_label": "Password",
+    "remember_me_label": "Remember me",
+    "forgot_password_link": "Forgot your password?",
+    "log_in_button": "Log in",
+    "student_label": "Student",
+    "class_level_label": "Class Level"
+}

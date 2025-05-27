@@ -6,81 +6,57 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Enums\UserRole;
+use App\Models\User;
 
 class UserFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = \App\Models\User::class;
+    protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
+    // pick two datetimes so updated_at is always >= created_at
+    $created = $this->faker->dateTimeBetween('-1 year', 'now');
+    $updated = $this->faker->dateTimeBetween($created, 'now');
+
         return [
-            'name'              => $this->faker->name(),
+            'student_id'     => $this->faker->unique()->regexify('[0-9]{6}'),     // random 6 หลัก
+            'name'              => $this->faker->unique()->name(),   // ← unique name
             'email'             => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password'          => Hash::make('secret'), // default pwd for seeded users
-            'role'              => UserRole::Student,     // default role
+            'password'          => Hash::make('secret'),
             'status'            => 1,
             'remember_token'    => Str::random(10),
+          //  'created_at'   => $created,
+          //  'updated_at'   => $updated,
         ];
     }
 
-    /** State: SuperAdmin */
-    public function superAdmin(): static
+
+    public function superadmin(): static
     {
         return $this->state([
-            'name'     => 'Super Admin',
-            'email'    => 'superadmin@example.com',
-            'role'     => UserRole::SuperAdmin,
+            'role'  => UserRole::SuperAdmin,
         ]);
     }
 
-    /** State: Admin */
     public function admin(): static
     {
         return $this->state([
-            'name'  => 'Admin User',
-            'email' => 'admin@example.com',
             'role'  => UserRole::Admin,
         ]);
     }
 
-    /** State: Teacher */
     public function teacher(): static
     {
         return $this->state([
-            'name'  => 'Teacher User',
-            'email' => 'teacher@example.com',
             'role'  => UserRole::Teacher,
         ]);
     }
 
-    /** State: Student */
-    /*
     public function student(): static
     {
         return $this->state([
-            'name'  => 'Student User',
-            'email' => 'student@example.com',
-            'role'  => UserRole::Student,
+            'role'   => UserRole::Student,
         ]);
     }
-*/
-    /** State: Student */
-public function student(): static
-{
-    return $this->state([
-        'role'  => UserRole::Student,
-        'status'=> 1,
-    ]);
-}
 }

@@ -1,0 +1,1 @@
+import{c as a,o as s,a as n,b as t,u as o,g as r,F as l}from"./app-DZ4JoI7A.js";import{_ as u}from"./SiteLayout-BeQ4Bb4x.js";const p=Object.assign({layout:u},{__name:"Student",setup(c){return(m,e)=>(s(),a(l,null,[n(o(r),{title:"นักเรียน"}),e[0]||(e[0]=t("section",null,[t("h1",null,"Student Page")],-1))],64))}});export{p as default};

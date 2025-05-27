@@ -1,0 +1,17 @@
+{
+    "welcome": "ยินดีต้อนรับสู่แอปพลิเคชันของเรา!",
+    "dashboard": "แดชบอร์ด",
+    "manage_roles": "จัดการบทบาท",
+    "manage_permissions": "จัดการสิทธิ์",
+    "home": "หน้าหลัก",
+    "profile": "โปรไฟล์",
+    "logout": "ออกจากระบบ",
+    "login_title": "เข้าสู่ระบบ",
+    "email_label": "อีเมล",
+    "password_label": "รหัสผ่าน",
+    "remember_me_label": "จดจำฉันไว้ในระบบ",
+    "forgot_password_link": "ลืมรหัสผ่านใช่หรือไม่?",
+    "log_in_button": "เข้าสู่ระบบ",
+     "student_label": "นักเรียน",
+      "class_level_label": "ระดับชั้น"
+}
