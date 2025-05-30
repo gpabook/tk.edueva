@@ -14,7 +14,7 @@ import { Link } from '@inertiajs/vue3';
         <div>
             <Link href="/">
                <!--  ///* <ApplicationLogo class="w-20 h-20 text-gray-500 fill-current" />  */// --->
-                <img src="/images/EDUEVA_main_logo.png" alt="Application Logo" class="w-20 h-20" />
+                <img src="/images/appschool_logo.svg" alt="Application Logo" class="w-20 h-20" />
             </Link>
         </div>
 

@@ -7,6 +7,11 @@ use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\SetLocale;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Support\Arr;
+
 
 class AppServiceProvider extends ServiceProvider
 {

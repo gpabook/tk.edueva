@@ -8,6 +8,10 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\ClassLevelController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\UserImportController;
+use App\Http\Controllers\UserExportController;
+use App\Http\Controllers\DocumentExportController;
+use App\Http\Controllers\TeacherBulkEditController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -54,6 +58,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/rooms/{room}/edit', [RoomController::class, 'edit'])->name('rooms.edit');
     Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
     Route::delete('/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy'); // Also ensure path consistency, e.g., '/rooms/{room}'
+
+// CSV Import Routes for Users
+    Route::get('/users/import', [UserImportController::class, 'create'])->name('users.import.create');
+    Route::post('/users/import', [UserImportController::class, 'store'])->name('users.import.store');
+// Excel Export Routes for Users
+    Route::get('/users/export/excel', [UserExportController::class, 'exportExcel'])->name('users.export.excel');
+// Ms-word Export
+Route::get('/export/users/word', [DocumentExportController::class, 'exportUsersToWord'])->name('users.export.word');
+
+// TeacherBulkEdit for table teacher
+    Route::get('/teachers/bulk-edit', [TeacherBulkEditController::class, 'edit'])->name('teachers.bulk-edit.form');
+    Route::put('/teachers/bulk-update', [TeacherBulkEditController::class, 'update'])->name('teachers.bulk-update.submit');
+
 });
 
 });

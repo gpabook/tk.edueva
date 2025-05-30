@@ -44,6 +44,7 @@ class User extends Authenticatable
         'role',     // User role (e.g., admin, editor) - linked to UserRole Enum
         'status',   // User status (e.g., active, inactive)
         'avatar',
+        'email_verified_at',
     ];
 
     /**
@@ -57,6 +58,7 @@ class User extends Authenticatable
         'remember_token',   // Security token for "remember me" functionality
     ];
 
+    protected $appends = ['avatar_url'];
     /**
      * The attributes that should be cast to native types.
      * Ensures data consistency when retrieving attributes.
@@ -85,6 +87,7 @@ class User extends Authenticatable
 
 
         // Optionally, an accessor for full URL:
+
     public function getAvatarUrlAttribute()
             {
                 return $this->avatar

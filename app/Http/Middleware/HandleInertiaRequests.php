@@ -39,11 +39,14 @@ class HandleInertiaRequests extends Middleware
                     'id' => $request->user()->id,
                     'name' => $request->user()->name,
                     'email' => $request->user()->email,
+                    'avatar' => $request->user()->avatar,
+                    'avatar_url' => $request->user()->avatar_url,
                     // Add these lines to share permissions and roles
                     'permissions' => $request->user()->getAllPermissions()->pluck('name'),
                     'roles' => $request->user()->getRoleNames(),
                 ] : null,
             ],
+
             'ziggy' => function () use ($request) { // If you use Ziggy
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),
@@ -53,6 +56,11 @@ class HandleInertiaRequests extends Middleware
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+
+            'appName' => config('app.name', 'AppSchool'), // คุณอาจจะมี appName อยู่แล้ว
+          //  'appLogo' => asset('images/edueva_logo1.png'), // <--- เพิ่มตรงนี้
+            'appLogo' => asset('images/appschool_logo_o.svg'), // <--- เพิ่มตรงนี้
+
                     // Add locale and translations
                     'locale' => fn () => App::getLocale(),
                     'translations' => function () {
