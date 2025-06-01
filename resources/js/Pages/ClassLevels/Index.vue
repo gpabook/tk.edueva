@@ -1,12 +1,11 @@
 <template>
-    <Head title="Class Levels" />
-
+    <Head :title="$t('new_class_level')" />
     <AuthenticatedLayout>
-      <template #header>
-        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-          Class Levels
-        </h2>
-      </template>
+        <template #header>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
+        {{ $t('new_class_level') }}
+      </h2>
+    </template>
 
       <div class="p-4 mx-auto mt-6 max-w-7xl sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-6">
@@ -17,7 +16,7 @@
             class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
             <PlusIcon class="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />
-            New Class Level
+            {{ $t('new_class_level') }}
           </Link>
         </div>
 

@@ -1,9 +1,9 @@
 <script setup>
 import { useForm, usePage } from '@inertiajs/vue3'
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { ref, watch } from 'vue'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { ref } from 'vue'
 
-defineOptions({ layout: AuthenticatedLayout });
+defineOptions({ layout: AuthenticatedLayout })
 
 const user = usePage().props.user
 
@@ -11,54 +11,70 @@ const form = useForm({
   avatar: null,
 })
 
-//const preview = ref(null)
-const preview = ref(user.avatar_url)
+const preview = ref(user.avatar_url || null)
 
 function onFileChange(e) {
-  form.avatar = e.target.files[0]
-  preview.value = URL.createObjectURL(form.avatar)
+  const file = e.target.files[0]
+  if (file) {
+    form.avatar = file
+    preview.value = URL.createObjectURL(file)
+  }
 }
 
 function submit() {
   form.post(route('avatar.store'), {
     onFinish: () => {
-      // ล้าง preview ถ้าต้องการ
+      // เคลียร์ preview ถ้าต้องการ
       preview.value = null
     },
   })
 }
 </script>
+
 <template>
-   <div class="py-12">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-xl font-bold">Upload Avatar</h1>
-      </div>
-
-      <div class="overflow-x-auto">
-
-      <form @submit.prevent="submit" enctype="multipart/form-data">
-        <input type="file" @change="onFileChange" accept="image/*" />
-
-        <div v-if="preview" class="mb-4 space-x-8 text-xl text-gray-800 sm:-my-px">
-          <p>Preview:</p>
-          <img :src="preview" class="object-cover w-24 h-24 rounded-full" />
+  <div class="py-6">
+    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+      <div class="overflow-hidden bg-white rounded-lg shadow dark:bg-gray-800">
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+          <h1 class="text-xl font-bold text-gray-800 dark:text-white">
+            {{ $t('upload_avatar') || 'อัปโหลดรูปโปรไฟล์' }}
+          </h1>
         </div>
 
-        <button
-          type="submit"
-          class="px-4 py-2 mt-4 text-white bg-blue-500 rounded"
-          :disabled="form.processing"
-        >
-          {{ form.processing ? 'กำลังอัปโหลด...' : 'อัปโหลด' }}
-        </button>
-      </form>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-  </template>
+        <div class="p-6">
+          <form @submit.prevent="submit" enctype="multipart/form-data" class="space-y-6">
+            <div>
+              <label for="avatar" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                {{ $t('select_image') || 'เลือกรูปภาพ' }}
+              </label>
+              <input
+                id="avatar"
+                type="file"
+                @change="onFileChange"
+                accept="image/*"
+                class="block w-full text-sm text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm cursor-pointer dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600"
+              />
+            </div>
 
+            <div v-if="preview" class="flex items-center space-x-4">
+              <div class="text-gray-700 dark:text-gray-200">
+                {{ $t('preview') || 'ตัวอย่าง:' }}
+              </div>
+              <img :src="preview" class="object-cover w-24 h-24 border border-gray-300 rounded-full dark:border-gray-600" />
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                class="px-5 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
+                :disabled="form.processing"
+              >
+                {{ form.processing ? ($t('uploading') || 'กำลังอัปโหลด...') : ($t('upload') || 'อัปโหลด') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

@@ -3,6 +3,11 @@
 "dashboard": "Dashboard",
 "manage_roles": "Manage Roles",
 "manage_permissions": "Manage Permissions",
+"manage_class": "Manage Class",
+"manage_room": "Manage Room",
+"manage_bank_user": "Manage Deposit-withdraw",
+"manage_avatar": "Update Avatar",
+"manage_setting": "Settings",
 "home": "Home",
 "profile": "Profile",
 "logout": "Log Out",
@@ -36,5 +41,6 @@
 "optional_field": "Optional",
 "default_role_note": "If empty or role not found, user will be assigned '{defaultRole}' role.",
 "csv_example_download": "For an example, you can",
-"download_template_link": "download a template CSV file."
+"download_template_link": "download a template CSV file.",
+"my_bank_account": "Bank account"
 }

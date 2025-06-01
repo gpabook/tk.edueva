@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
          ->name('bank.deposit');
     Route::post('/bank/withdraw', [BankAccountController::class, 'withdraw'])
          ->name('bank.withdraw');
+    Route::get('/bank/calculate-interest', [BankAccountController::class, 'calculateInterest'])->name('bank.calculate-interest');
 
 
     });

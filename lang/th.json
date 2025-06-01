@@ -3,6 +3,11 @@
 "dashboard": "แดชบอร์ด",
 "manage_roles": "จัดการบทบาท",
 "manage_permissions": "จัดการสิทธิ์",
+"manage_class": "จัดการชั้นเรียน",
+"manage_room": "จัดการห้องเรียน",
+"manage_bank_user": "จัดการ ฝาก-ถอน",
+"manage_avatar": "แก้ไขรูป",
+"manage_setting": "ตั้งค่าพื้นฐาน",
 "home": "หน้าหลัก",
 "profile": "โปรไฟล์",
 "logout": "ออกจากระบบ",
@@ -36,5 +41,6 @@
 "optional_field": "ไม่บังคับ",
 "default_role_note": "หากเว้นว่างหรือ role ที่ระบุไม่พบ ผู้ใช้จะถูกกำหนด role เป็น '{defaultRole}'",
 "csv_example_download": "สำหรับตัวอย่าง คุณสามารถ",
-"download_template_link": "ดาวน์โหลดไฟล์ CSV แม่แบบ"
+"download_template_link": "ดาวน์โหลดไฟล์ CSV แม่แบบ",
+"my_bank_account": "บัญชีธนาคาร"
 }

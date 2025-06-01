@@ -9,15 +9,13 @@
         class="flex flex-col"
       >
       <!-- User Profile Summary (Sidebar Footer) -->
-
 <!-- Sidebar User Profile Section -->
-<div class="pt-4 mt-6 border-b border-gray-200 dark:border-gray-700">
+<div class="pt-4 mt-6 border-t border-gray-200 dark:border-gray-700">
   <div class="px-3">
     <div class="relative flex flex-col items-center group">
       <!-- Avatar (always shown) -->
       <Link
-        v-if="can('update avatar')"
-        :href="route('avatar.update')"
+        :href="route('profile.edit')"
         class="block rounded-full hover:ring-2 hover:ring-blue-400"
         title="View Profile"
       >
@@ -33,8 +31,8 @@
         <p class="text-sm font-semibold text-gray-800 truncate dark:text-gray-100">
           {{ page.props.auth.user?.name }}
         </p>
-        <p class="text-xs text-red-500 truncate dark:text-green-400">
-            {{ page.props.auth.user.roles[0] }}
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          {{ page.props.auth.user.roles[0] }}
         </p>
         <p class="text-xs text-gray-500 truncate dark:text-gray-400">
           {{ page.props.auth.user?.email }}
@@ -88,13 +86,13 @@
         <nav class="flex-1 overflow-y-auto">
           <ul class="px-2 space-y-2">
             <li>
-                <Link :href="route('dashboard')" class="flex items-center p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
+              <a href="#" class="flex items-center p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
                 <span class="mr-3 material-icons">dashboard</span>
                 <span v-if="!isSidebarCollapsed">{{ $t('menu.dashboard') }}</span>
-                </Link>
+              </a>
             </li>
 
-<!-- Dropdown setting-->
+            <!-- Dropdown -->
             <li>
               <button
                 @click="toggleDropdown('settings')"
@@ -118,90 +116,6 @@
                 <li><a href="#" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">{{ $t('menu.account') }}</a></li>
               </ul>
             </li>
-<!-- Dropdown: Manage Classroom -->
-            <li>
-  <button
-    @click="toggleDropdown('classroom')"
-    class="flex items-center w-full p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
-  >
-    <span class="mr-3 material-icons">school</span>
-    <span v-if="!isSidebarCollapsed">{{ $t('menu.classroom') }}</span>
-    <svg
-      v-if="!isSidebarCollapsed"
-      :class="dropdowns.classroom ? 'rotate-90' : ''"
-      class="w-4 h-4 ml-auto transition-transform"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-    </svg>
-  </button>
-
-  <ul v-show="dropdowns.classroom" class="pl-10 mt-1 space-y-1" v-if="!isSidebarCollapsed">
-    <li>
-      <Link
-      v-if="can('manage classes')"
-      :href="route('class-levels.index')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.class_levels') }}
-      </Link>
-    </li>
-    <li>
-      <Link :href="route('rooms.index')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.rooms') }}
-      </Link>
-    </li>
-    <li>
-      <Link :href="'#'" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.subjects') }}
-      </Link>
-    </li>
-  </ul>
-            </li>
-<!-- Dropdown: School Bank -->
-<li>
-  <button
-    @click="toggleDropdown('schoolBank')"
-    class="flex items-center w-full p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
-  >
-    <span class="mr-3 material-icons">account_balance</span>
-    <span v-if="!isSidebarCollapsed">{{ $t('menu.schoolBank') }}</span>
-    <svg
-      v-if="!isSidebarCollapsed"
-      :class="dropdowns.schoolBank ? 'rotate-90' : ''"
-      class="w-4 h-4 ml-auto transition-transform"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-    </svg>
-  </button>
-
-  <ul v-show="dropdowns.schoolBank" class="pl-10 mt-1 space-y-1" v-if="!isSidebarCollapsed">
-    <li>
-      <Link
-      v-if="can('view banks')"
-      :href="route('bank.myaccount', $page.props.auth.user.id)" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.myAccount') }}
-      </Link>
-    </li>
-    <li>
-      <Link
-      v-if="can('read banks')"
-      :href="route('bank.user')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.usersAccount') }}
-      </Link>
-    </li>
-    <li>
-      <Link
-       v-if="route().has('bank.calculate-interest') && can('read banks')"
-      :href="route('bank.calculate-interest')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.calculateInterest') }}
-      </Link>
-    </li>
-  </ul>
-</li>
 
             <li>
               <a href="#" class="flex items-center p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
@@ -216,7 +130,7 @@
         <div class="flex flex-col p-4 mt-auto space-y-3" v-if="!isSidebarCollapsed">
           <!-- Language Switcher -->
           <div class="flex items-center justify-between">
-        <!----<label for="language" class="text-sm">{{ $t('language') }}</label>---->
+            <label for="language" class="text-sm">{{ $t('language') }}</label>
             <select
               id="language"
               v-model="currentLocale"
@@ -224,7 +138,7 @@
               class="p-1 text-sm bg-gray-100 rounded dark:bg-gray-700"
             >
               <option value="th">ไทย</option>
-              <option value="en">Eng</option>
+              <option value="en">English</option>
             </select>
           </div>
 
@@ -243,10 +157,6 @@
       </aside>
     <!-- Main Content with footer -->
     <div class="flex flex-col flex-1">
-    <!-- ✅ Header slot support -->
-  <header v-if="$slots.header" class="px-6 py-4 bg-white shadow dark:bg-gray-800">
-    <slot name="header" />
-  </header>
       <!-- Main Content slot  -->
       <main class="flex-1 p-6 overflow-auto bg-gray-50 dark:bg-gray-900">
         <slot />
@@ -281,9 +191,6 @@ import { Link, usePage, router as inertiaRouter } from '@inertiajs/vue3'
 
 const page = usePage()
 const appVersion = import.meta.env.VITE_APP_VERSION || 'dev'
-const can = (permissionName) => {
-    return page.props.auth.user && page.props.auth.user.permissions ? page.props.auth.user.permissions.includes(permissionName) : false;
-};
 
 const userProfilePic = computed(() =>
   page.props.auth?.user?.avatar_url ?? '/images/default-avatar.png'
@@ -307,11 +214,7 @@ const toggleDesktopSidebar = () => {
 }
 
 // Dropdown state
-const dropdowns = reactive({
-    settings: false, // drop down menu Settings
-    classroom: false,  // drop down menu ClassRoom
-    schoolBank: false  // drop down menu SchoolBank
-})
+const dropdowns = reactive({ settings: false })
 function toggleDropdown(name) {
   dropdowns[name] = !dropdowns[name]
 }
