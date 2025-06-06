@@ -39,6 +39,17 @@ class User extends Authenticatable
         'student_id',
         'room_id',
         'name',
+
+        'name_th',
+        'surname_th',
+        'name_en',
+        'surname_en',
+        'birthday',
+        'gender',
+        'phone',
+        'line_id',
+        'address',
+
         'email',
         'password',
         'role',     // User role (e.g., admin, editor) - linked to UserRole Enum
@@ -102,7 +113,7 @@ class User extends Authenticatable
      */
     public function bankAccount(): HasOne
     {
-        return $this->hasOne(BankAccount::class);
+        return $this->hasOne(BankAccount::class, 'student_id', 'student_id');
     }
     // --- End Bank Account Relationship ---
 
@@ -135,4 +146,23 @@ public function advisingRooms()
         'room_id'
     )->withTimestamps();
 }
+// ความสัมพันธ์แบบ belongsToMany
+public function enrolledRooms()
+{
+    return $this->belongsToMany(Room::class, 'room_student')
+        ->withPivot(['assigned_at', 'left_at'])
+        ->with('classLevel');
+}
+
+public function currentRoom()
+{
+    return $this->belongsToMany(Room::class, 'room_student')
+        ->wherePivotNull('left_at')
+        ->withPivot(['assigned_at', 'left_at'])
+        ->with('classLevel');
+}
+
+
+
+// --- end User Model ------
 }

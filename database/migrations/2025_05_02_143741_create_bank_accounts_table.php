@@ -13,13 +13,20 @@ public function up()
 {
     Schema::create('bank_accounts', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('user_id')
-              ->constrained()
-              ->cascadeOnDelete();
-        $table->decimal('balance', 15, 2)
-              ->default(0);
+
+        // student_id as string (must match users.student_id type)
+        $table->string('student_id', 20);
+
+        // Add the foreign key to users.student_id
+        $table->foreign('student_id')
+              ->references('student_id')
+              ->on('users')
+              ->onDelete('cascade');
+
+        $table->decimal('balance', 15, 2)->default(0);
         $table->timestamps();
     });
+
 }
 
 

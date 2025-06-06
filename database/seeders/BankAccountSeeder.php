@@ -17,7 +17,7 @@ class BankAccountSeeder extends Seeder
 ///////////////////////////////////
         User::all()->each(function ($user) {
             BankAccount::updateOrCreate(
-                ['user_id' => $user->id],       // if exists, skip; otherwise create
+                ['student_id' => $user->student_id],       // if exists, skip; otherwise create
                 ['balance' => 0]                // initial balance
             );
         });

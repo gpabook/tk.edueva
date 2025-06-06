@@ -5,12 +5,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 
 // Props from backend
 const props = defineProps({
-  account: Object // { id, user_id, balance, transactions: [] }
+  account: Object, // { id, user_id, balance, transactions: [] }
+  acc_name: String
 })
 
 // Deposit form
 const depositForm = useForm({
-  user_id: props.account.user_id,
+  student_id: props.account.student_id,
   amount: '',
   description: ''
 })
@@ -23,7 +24,7 @@ function submitDeposit() {
 
 // Withdraw form
 const withdrawForm = useForm({
-  user_id: props.account.user_id,
+  student_id: props.account.student_id,
   amount: '',
   description: ''
 })
@@ -49,7 +50,7 @@ const formattedBalance = computed(() => {
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">
-        {{ $t('my_bank_account') }} |{{ $t('name') }}: {{ props.account.name }} {{ $t('user_id') }}: {{ props.account.user_id }}
+        {{ $t('my_bank_account') }} |{{ $t('name') }}: {{ props.acc_name }} {{ $t('user_id') }}: {{ props.account.student_id }}
       </h2>
     </template>
 
@@ -70,7 +71,7 @@ const formattedBalance = computed(() => {
               <div>
                 <h4 class="mb-2 font-semibold">{{ $t('bank.deposit') }}</h4>
                 <form @submit.prevent="submitDeposit" class="flex flex-col gap-3">
-                  <input type="hidden" v-model="depositForm.user_id" />
+                  <input type="hidden" v-model="depositForm.student_id" />
                   <input
                     v-model="depositForm.amount"
                     type="number"
@@ -98,7 +99,7 @@ const formattedBalance = computed(() => {
               <div>
                 <h4 class="mb-2 font-semibold">{{ $t('bank.withdraw') }}</h4>
                 <form @submit.prevent="submitWithdraw" class="flex flex-col gap-3">
-                  <input type="hidden" v-model="withdrawForm.user_id" />
+                  <input type="hidden" v-model="withdrawForm.student_id" />
                   <input
                     v-model="withdrawForm.amount"
                     type="number"
@@ -155,7 +156,7 @@ const formattedBalance = computed(() => {
             <!-- 🧾 Print Passbook -->
             <div class="mt-6">
               <a
-                :href="route('bank.passbook.pdf', props.account.user_id)"
+                :href="route('bank.passbook.pdf', props.account.student_id)"
                 target="_blank"
                 class="inline-block px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
               >

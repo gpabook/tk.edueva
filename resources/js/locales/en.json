@@ -1,60 +1,82 @@
 {
-    "appName": "AppSchool",
-    "menu": {
-      "dashboard": "Dashboard",
-      "settings": "Settings",
-      "profile": "Profile",
-      "account": "Account",
-      "about": "About",
-      "classroom": "Manage Class",
-      "class_levels": "Class",
-      "rooms": "Rooms",
-      "subjects": "Subjects",
-      "schoolBank": "School Bank",
-      "myAccount": "My Account",
-      "usersAccount": "Users Account",
-      "calculateInterest": "Calculate Interest"
-    },
-"bank": {
-    "my_account": "My Bank Account",
-    "balance": "Balance",
-    "deposit": "Deposit Funds",
-    "withdraw": "Withdraw Funds",
-    "amount": "Amount",
-    "description": "Description",
-    "description_optional": "Description (optional)",
-    "submit_deposit": "Deposit",
-    "submit_withdraw": "Withdraw",
-    "transaction_history": "Transaction History",
-    "date": "Date",
-    "type": "Type",
-    "print_passbook": "Print Passbook"
-  },
-  "rooms": {
-    "manage": "Manage Rooms",
-    "create": "Create New Room",
-    "id": "ID",
-    "class_level": "Class Level",
-    "name_en": "Room Name (EN)",
-    "name_th": "Room Name (TH)",
-    "advisors": "Advisors",
-    "actions": "Actions",
-    "empty": "No rooms found."
-  },
-"message": {
-    "loggedIn": "You're logged in!"
-  },
-  "buttons": {
-    "teachersBulkEdit": "Bulk Edit Teachers",
-    "importUsers": "Import CSV Users",
-    "exportExcel": "Export Excel Users",
-    "exportWord": "Export Word Users"
-  },
-"footer": {
-    "version": "Version",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
-  },
+"appName": "AppSchool",
+
+  "menu.dashboard": "Dashboard",
+  "menu.settings": "Settings",
+  "menu.profile": "Profile",
+  "menu.account": "Account",
+  "menu.about": "About",
+  "menu.classroom": "Manage Class",
+  "menu.class_levels": "Class",
+  "menu.rooms": "Rooms",
+  "menu.subjects": "Subjects",
+  "menu.schoolBank": "School Bank",
+  "menu.myAccount": "My Account",
+  "menu.usersAccount": "Users Account",
+  "menu.calculateInterest": "Calculate Interest",
+
+  "menu.import_export": "Import / Export",
+  "menu.import_users": "Import Users (csv)",
+  "menu.export_users": "Export Users (excel)",
+  "menu.export_users_word": "Export Users (word)",
+  "menu.import_students": "Import Students",
+  "menu.import_teachers": "Import Teachers",
+  "menu.import_subjects": "Import Subjects",
+  "menu.import_bank_accounts": "Import Bank Accounts",
+  "menu.assign_room": "Assign Room",
+
+  "menu.manage_student": "Manage Student",
+  "menu.all_students": "All Students",
+  "menu.add_student": "Add Student",
+  "menu.delete_students": "Delete Students",
+
+  "bank.my_account": "My Bank Account",
+  "bank.balance": "Balance",
+  "bank.deposit": "Deposit Funds",
+  "bank.withdraw": "Withdraw Funds",
+  "bank.amount": "Amount",
+  "bank.description": "Description",
+  "bank.description_optional": "Description (optional)",
+  "bank.submit_deposit": "Deposit",
+  "bank.submit_withdraw": "Withdraw",
+  "bank.transaction_history": "Transaction History",
+  "bank.date": "Date",
+  "bank.type": "Type",
+  "bank.print_passbook": "Print Passbook",
+  "bank.currency": "Baht",
+
+  "rooms.manage": "Manage Rooms",
+  "rooms.create": "Create New Room",
+  "rooms.id": "ID",
+  "rooms.class_level": "Class Level",
+  "rooms.name_en": "Room Name (EN)",
+  "rooms.name_th": "Room Name (TH)",
+  "rooms.advisors": "Advisors",
+  "rooms.actions": "Actions",
+  "rooms.empty": "No rooms found.",
+
+  "message.loggedIn": "You're logged in!",
+
+  "buttons.teachersBulkEdit": "Bulk Edit Teachers",
+  "buttons.importUsers": "Import CSV Users",
+  "buttons.exportExcel": "Export Excel Users",
+  "buttons.exportWord": "Export Word Users",
+
+
+    "gender.male": "Male",
+    "gender.female": "Female",
+    "gender.other": "Other",
+
+    "chart.usersByRole": "User by role",
+
+  "birthday_label": "Birthday",
+  "gender_label": "Gender",
+  "select_gender": "Select gender",
+
+
+  "footer.version": "Version",
+  "footer.privacy": "Privacy Policy",
+  "footer.terms": "Terms of Service",
 
 "language": "Language",
 "dark": "Dark Mode",
@@ -95,9 +117,11 @@
 "csv_file_format_note": "CSV file only. Max 2MB.",
 "csv_format_guidelines_title": "CSV Format Guidelines",
 "csv_ensure_header_row": "Ensure your CSV file has a header row with the following column names (case-sensitive):",
-"csv_column_name": "Column 1",
-"csv_column_email": "Column 2",
-"csv_column_role": "Column 3",
+"csv_column_student_id": "Column 1",
+"csv_column_name_th": "Column 2",
+"csv_column_surname_th": "Column 3",
+"csv_column_email": "Column 4",
+"csv_column_role": "Column 5",
 "required_field": "Required",
 "unique_field": "Must be unique",
 "optional_field": "Optional",
@@ -113,5 +137,8 @@
 "user_id": "User ID",
 "created_at": "Created At",
 "edit": "Edit",
-"delete": "Delete"
+"delete": "Delete",
+"edit_profile": "Edit Profile",
+"id": "ID"
+
 }

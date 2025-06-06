@@ -68,4 +68,16 @@ class Room extends Model
             'user_id'
         )->withTimestamps();
     }
+
+    public function enrolledStudents()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'room_student',
+            'room_id',
+            'user_id'
+        )->withPivot(['assigned_at', 'left_at'])->withTimestamps();
+    }
+
+    // ---------- end Room Model -------
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User; // ตัวอย่าง Model
 
 class DocumentExportController extends Controller
@@ -52,7 +53,8 @@ class DocumentExportController extends Controller
 
         // บันทึกไฟล์และส่งให้ดาวน์โหลด
         $objWriter = IOFactory::createWriter($phpWord, 'Word2007'); // Word2007 คือ .docx
-        $fileName = 'users_export.docx';
+        $fileName = "exported_users_" . Auth::user()->id . "_" . now()->format('Ymd_His') . ".docx";
+       // $fileName = 'users_export.docx';
 
         // วิธีที่ 1: บันทึกลง Server ชั่วคราวแล้วดาวน์โหลด (ถ้าจำเป็น)
         // $objWriter->save(storage_path('app/' . $fileName));

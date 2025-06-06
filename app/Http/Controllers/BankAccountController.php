@@ -21,15 +21,18 @@ public function bankuser(Request $request)
     $search = $request->input('search');
 
     $users = BankAccount::with('user')
-        ->when($search, function($query, $search) {
-            $query->whereHas('user', function($q) use ($search) {
-                $q->where('name',  'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            });
-        })
-        ->orderBy('id', 'asc')
-        ->paginate(20)
-        ->withQueryString(); // เก็บ ?search=… ไว้ในลิงก์ pagination
+    ->whereHas('user') // only include if the user relation exists
+    ->when($search, function($query, $search) {
+        $query->whereHas('user', function($q) use ($search) {
+            $q->where('name',  'like', "%{$search}%")
+              ->orWhere('name_th', 'like', "%{$search}%")
+              ->orWhere('surname_th', 'like', "%{$search}%")
+              ->orWhere('email', 'like', "%{$search}%");
+        });
+    })
+    ->orderBy('id', 'asc')
+    ->paginate(20)
+    ->withQueryString();
 
     return Inertia::render('Bank/User', [
         'users'   => $users,
@@ -40,25 +43,25 @@ public function bankuser(Request $request)
     /**
      * แสดงบัญชีและรายการธุรกรรมของผู้ใช้ให้เจ้าของบัญชีดู
      */
-public function showme($user_id)
-{
-    $user = User::findOrFail($user_id);
+    public function showme($student_id)
+    {
+        $user = User::where('student_id', $student_id)->firstOrFail();
 
-    // Then grab their bank account and load transactions
-    $account = $user->bankAccount     // or ->bankAccounts() if it's hasMany
-                     ->load('transactions');
+        $account = $user->bankAccount->load('transactions');
 
-    return Inertia::render('Bank/Accountme', [
-        'account' => $account,
-        'acc_name' => $user->name,
-    ]);
-}
+        return Inertia::render('Bank/Accountme', [
+            'account' => $account,
+            'acc_name' => $user->name,
+        ]);
+    }
+
     /**
      * แสดงบัญชีและรายการธุรกรรมของผู้ใช้
      */
-public function show($user_id)
+public function show($student_id)
 {
-    $user = User::findOrFail($user_id);
+    //$user = User::findOrFail($student_id);
+    $user = User::where('student_id', $student_id)->firstOrFail();
 
     // Then grab their bank account and load transactions
     $account = $user->bankAccount     // or ->bankAccounts() if it's hasMany
@@ -77,14 +80,14 @@ public function show($user_id)
     {
         // 1) Validate amount, description, AND the user_id from your hidden input
         $data = $request->validate([
-            'user_id'     => 'required|exists:users,id',
+            'student_id'     => 'required|exists:users,student_id',
             'amount'      => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
         ]);
 
         // 2) Lookup that user's bank account
       //$account = Auth::user()->bankAccount;
-        $account = BankAccount::where('user_id', $data['user_id'])
+        $account = BankAccount::where('student_id', $data['student_id'])
                 ->firstOrFail();
 
         // 3) Perform your transaction
@@ -107,11 +110,11 @@ public function show($user_id)
     public function withdraw(Request $request)
     {
         $data_uid = $request->validate([
-            'user_id'     => 'required|exists:users,id',
+            'student_id'     => 'required|exists:users,student_id',
         ]);
        // $account = Auth::user()->bankAccount;
 
-       $account = BankAccount::where('user_id', $data_uid['user_id'])
+       $account = BankAccount::where('student_id', $data_uid['student_id'])
        ->firstOrFail();
 
         $data = $request->validate([
@@ -135,9 +138,11 @@ public function show($user_id)
      * สร้างและดาวน์โหลด PDF Passbook
      */
 
-public function passbookPdf($user_id)
+public function passbookPdf($student_id)
 {
-    $user = User::findOrFail($user_id);
+
+    $user = User::where('student_id', $student_id)->firstOrFail();
+
 
     // Then grab their bank account and load transactions
     $account = $user->bankAccount     // or ->bankAccounts() if it's hasMany

@@ -47,7 +47,7 @@
             :href="route('password.change')"
             class="block text-xs text-blue-600 hover:underline dark:text-blue-400"
           >
-            {{ $t('change_password') }}
+            {{ t('change_password') }}
           </Link>
         </div>
       </div>
@@ -60,7 +60,7 @@
         <div class="flex items-center justify-between p-4">
           <span v-if="!isSidebarCollapsed" class="flex items-center space-x-2 text-lg font-semibold">
             <img src="/images/appschool_logo_o.svg" alt="Logo" class="w-6 h-6" />
-            <span>{{ $t('appName') }}</span>
+            <span>{{ t('appName') }}</span>
           </span>
           <button @click="toggleSidebar" class="text-gray-500 dark:text-gray-300 hover:text-gray-700">
             <svg
@@ -84,13 +84,58 @@
           </button>
         </div>
 
+<!-- 📌 Sidebar Profile Dropdown Menu -->
+<div class="px-2 py-2 border-gray-200 dark:border-gray-700">
+  <button
+    @click="toggleDropdown('profile')"
+    class="flex items-center w-full p-2 text-left rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+  >
+    <span class="mr-3 material-icons">person</span>
+    <span v-if="!isSidebarCollapsed">{{ $t('menu.profile') }}</span>
+    <svg
+      v-if="!isSidebarCollapsed"
+      :class="dropdowns.profile ? 'rotate-90' : ''"
+      class="w-4 h-4 ml-auto transition-transform"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <ul v-show="dropdowns.profile" class="pl-10 mt-1 space-y-1" v-if="!isSidebarCollapsed">
+    <li>
+      <Link
+        :href="route('profile.edit')"
+        class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300"
+      >
+      <span class="text-base text-gray-500">></span>
+        {{ $t('edit_profile') }}
+      </Link>
+    </li>
+    <li>
+      <form method="POST" :action="route('logout')" @submit.prevent="$event.target.submit()">
+        <input type="hidden" name="_token" :value="csrfToken" />
+        <button
+          type="submit"
+          class="block py-1 text-sm text-left text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+        >
+        <span class="text-base text-gray-500">></span>
+          {{ $t('logout') }}
+        </button>
+      </form>
+    </li>
+  </ul>
+</div>
+
         <!-- Sidebar Menu -->
         <nav class="flex-1 overflow-y-auto">
           <ul class="px-2 space-y-2">
             <li>
                 <Link :href="route('dashboard')" class="flex items-center p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
                 <span class="mr-3 material-icons">dashboard</span>
-                <span v-if="!isSidebarCollapsed">{{ $t('menu.dashboard') }}</span>
+                <span v-if="!isSidebarCollapsed">{{ t('menu.dashboard') }}</span>
                 </Link>
             </li>
 
@@ -101,7 +146,7 @@
                 class="flex items-center w-full p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
               >
                 <span class="mr-3 material-icons">settings</span>
-                <span v-if="!isSidebarCollapsed">{{ $t('menu.settings') }}</span>
+                <span v-if="!isSidebarCollapsed">{{ t('menu.settings') }}</span>
                 <svg
                   v-if="!isSidebarCollapsed"
                   :class="dropdowns.settings ? 'rotate-90' : ''"
@@ -114,18 +159,22 @@
                 </svg>
               </button>
               <ul v-show="dropdowns.settings" class="pl-10 mt-1 space-y-1" v-if="!isSidebarCollapsed">
-                <li><a href="#" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">{{ $t('menu.profile') }}</a></li>
-                <li><a href="#" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">{{ $t('menu.account') }}</a></li>
+                <li><a href="#" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+                    <span class="text-base text-gray-500">></span>
+                    {{ t('menu.profile') }}</a></li>
+                <li><a href="#" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+                    <span class="text-base text-gray-500">></span>
+                    {{ t('menu.account') }}</a></li>
               </ul>
             </li>
 <!-- Dropdown: Manage Classroom -->
-            <li>
+<li>
   <button
     @click="toggleDropdown('classroom')"
     class="flex items-center w-full p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
   >
     <span class="mr-3 material-icons">school</span>
-    <span v-if="!isSidebarCollapsed">{{ $t('menu.classroom') }}</span>
+    <span v-if="!isSidebarCollapsed">{{ t('menu.classroom') }}</span>
     <svg
       v-if="!isSidebarCollapsed"
       :class="dropdowns.classroom ? 'rotate-90' : ''"
@@ -143,21 +192,75 @@
       <Link
       v-if="can('manage classes')"
       :href="route('class-levels.index')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.class_levels') }}
+      <span class="text-base text-gray-500">></span>
+      {{ t('menu.class_levels') }}
       </Link>
     </li>
     <li>
       <Link :href="route('rooms.index')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.rooms') }}
+        <span class="text-base text-gray-500">></span>
+        {{ t('menu.rooms') }}
       </Link>
     </li>
+
+    <li v-if="route().has('assign-room.index')">
+  <Link :href="route('assign-room.index')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+    <span class="text-base text-gray-500">></span>
+    {{ $t('menu.assign_room') }}
+  </Link>
+</li>
+
     <li>
       <Link :href="'#'" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.subjects') }}
+        <span class="text-base text-gray-500">></span>
+        {{ t('menu.subjects') }}
       </Link>
     </li>
   </ul>
-            </li>
+</li>
+
+<!-- Dropdown: Manage Student -->
+<li>
+  <button
+    @click="toggleDropdown('manageStudent')"
+    class="flex items-center w-full p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+  >
+    <span class="mr-3 material-icons">people</span>
+    <span v-if="!isSidebarCollapsed">{{ $t('menu.manage_student') }}</span>
+    <svg
+      v-if="!isSidebarCollapsed"
+      :class="dropdowns.manageStudent ? 'rotate-90' : ''"
+      class="w-4 h-4 ml-auto transition-transform"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
+  </button>
+
+  <ul v-show="dropdowns.manageStudent" class="pl-10 mt-1 space-y-1" v-if="!isSidebarCollapsed">
+    <li v-if="route().has('students.index')">
+      <Link :href="route('students.index')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+        <span class="mr-2 text-xs align-middle material-icons">list</span>
+        {{ $t('menu.all_students') }}
+      </Link>
+    </li>
+    <li v-if="route().has('students.create')">
+      <Link :href="route('students.create')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+        <span class="mr-2 text-xs align-middle material-icons">person_add</span>
+        {{ $t('menu.add_student') }}
+      </Link>
+    </li>
+    <li v-if="route().has('students.bulk_delete')">
+      <Link :href="route('students.bulk_delete')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+        <span class="mr-2 text-xs align-middle material-icons">delete</span>
+        {{ $t('menu.delete_students') }}
+      </Link>
+    </li>
+  </ul>
+</li>
+
 <!-- Dropdown: School Bank -->
 <li>
   <button
@@ -165,7 +268,7 @@
     class="flex items-center w-full p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
   >
     <span class="mr-3 material-icons">account_balance</span>
-    <span v-if="!isSidebarCollapsed">{{ $t('menu.schoolBank') }}</span>
+    <span v-if="!isSidebarCollapsed">{{ t('menu.schoolBank') }}</span>
     <svg
       v-if="!isSidebarCollapsed"
       :class="dropdowns.schoolBank ? 'rotate-90' : ''"
@@ -182,31 +285,94 @@
     <li>
       <Link
       v-if="can('view banks')"
-      :href="route('bank.myaccount', $page.props.auth.user.id)" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.myAccount') }}
+      :href="route('bank.myaccount', $page.props.auth.user.student_id)" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+      <span class="text-base text-gray-500">></span>
+      {{ t('menu.myAccount') }}
       </Link>
     </li>
     <li>
       <Link
       v-if="can('read banks')"
       :href="route('bank.user')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.usersAccount') }}
+      <span class="text-base text-gray-500">></span>
+      {{ t('menu.usersAccount') }}
       </Link>
     </li>
     <li>
       <Link
        v-if="route().has('bank.calculate-interest') && can('read banks')"
       :href="route('bank.calculate-interest')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
-        {{ $t('menu.calculateInterest') }}
+      <span class="text-base text-gray-500">></span>
+      {{ t('menu.calculateInterest') }}
       </Link>
     </li>
   </ul>
 </li>
 
+<!-- Dropdown: Import-Export -->
+<li>
+  <button
+    @click="toggleDropdown('importExport')"
+    class="flex items-center w-full p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+  >
+    <span class="mr-3 material-icons">import_export</span>
+    <span v-if="!isSidebarCollapsed">{{ $t('menu.import_export') }}</span>
+    <svg
+      v-if="!isSidebarCollapsed"
+      :class="dropdowns.importExport ? 'rotate-90' : ''"
+      class="w-4 h-4 ml-auto transition-transform"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
+  </button>
+
+  <ul v-show="dropdowns.importExport" class="pl-10 mt-1 space-y-1" v-if="!isSidebarCollapsed">
+    <li v-if="route().has('users.import.create')">
+  <Link :href="route('users.import.create')" class="flex items-center gap-1 py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+    <span class="text-base text-gray-500">></span>
+    {{ $t('menu.import_users') }}
+  </Link>
+</li>
+
+<li v-if="route().has('users.export.excel')">
+  <a :href="route('users.export.excel')" class="flex items-center gap-1 py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+    <span class="text-base text-gray-500">></span>
+    {{ $t('menu.export_users') }}
+  </a>
+</li>
+
+<li v-if="route().has('users.export.word')">
+  <a :href="route('users.export.word')" class="flex items-center gap-1 py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+    <span class="text-base text-gray-500">></span>
+    {{ $t('menu.export_users_word') }}
+  </a>
+</li>
+
+<li v-if="route().has('import.subjects')">
+  <Link :href="route('import.subjects')" class="flex items-center gap-1 py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+    <span class="text-base text-gray-500">></span>
+    {{ $t('menu.import_subjects') }}
+  </Link>
+</li>
+
+<li v-if="route().has('import.bank_accounts')">
+  <Link :href="route('import.bank_accounts')" class="flex items-center gap-1 py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+    <span class="text-base text-gray-500">></span>
+    {{ $t('menu.import_bank_accounts') }}
+  </Link>
+</li>
+
+  </ul>
+</li>
+
+
             <li>
               <a href="#" class="flex items-center p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
                 <span class="mr-3 material-icons">info</span>
-                <span v-if="!isSidebarCollapsed">{{ $t('menu.about') }}</span>
+                <span v-if="!isSidebarCollapsed">{{ t('menu.about') }}</span>
               </a>
             </li>
           </ul>
@@ -216,7 +382,7 @@
         <div class="flex flex-col p-4 mt-auto space-y-3" v-if="!isSidebarCollapsed">
           <!-- Language Switcher -->
           <div class="flex items-center justify-between">
-        <!----<label for="language" class="text-sm">{{ $t('language') }}</label>---->
+        <!----<label for="language" class="text-sm">{{ t('language') }}</label>---->
             <select
               id="language"
               v-model="currentLocale"
@@ -234,7 +400,7 @@
               {{ isDark ? 'light_mode' : 'dark_mode' }}
             </span>
             <span>
-              {{ isDark ? $t('light') : $t('dark') }}
+              {{ isDark ? t('light') : t('dark') }}
             </span>
           </button>
         </div>
@@ -256,15 +422,15 @@
   class="px-6 py-4 text-sm text-gray-600 bg-white border-t border-gray-200 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-700"
 >
   <div class="flex flex-col items-center justify-between gap-2 sm:flex-row">
-    <span>&copy; {{ new Date().getFullYear() }} {{ $t('appName') }}. All rights reserved.</span>
+    <span>&copy; {{ new Date().getFullYear() }} {{ t('appName') }}. All rights reserved.</span>
 
     <div class="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
       <span class="text-xs text-gray-500 sm:text-sm dark:text-gray-400">
         v{{ appVersion }}
       </span>
       <div class="flex gap-3">
-        <a href="#" class="hover:underline">{{ $t('footer.privacy') }}</a>
-        <a href="#" class="hover:underline">{{ $t('footer.terms') }}</a>
+        <a href="#" class="hover:underline">{{ t('footer.privacy') }}</a>
+        <a href="#" class="hover:underline">{{ t('footer.terms') }}</a>
       </div>
     </div>
   </div>
@@ -279,6 +445,8 @@ import { ref, reactive, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Link, usePage, router as inertiaRouter } from '@inertiajs/vue3'
 
+
+const { locale, t } = useI18n()
 const page = usePage()
 const appVersion = import.meta.env.VITE_APP_VERSION || 'dev'
 const can = (permissionName) => {
@@ -288,8 +456,9 @@ const can = (permissionName) => {
 const userProfilePic = computed(() =>
   page.props.auth?.user?.avatar_url ?? '/images/default-avatar.png'
 )
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-const { locale, t } = useI18n()
+
 
 // Sidebar state
 const isSidebarCollapsed = ref(false)
@@ -310,7 +479,8 @@ const toggleDesktopSidebar = () => {
 const dropdowns = reactive({
     settings: false, // drop down menu Settings
     classroom: false,  // drop down menu ClassRoom
-    schoolBank: false  // drop down menu SchoolBank
+    schoolBank: false,  // drop down menu SchoolBank
+    profile: false,
 })
 function toggleDropdown(name) {
   dropdowns[name] = !dropdowns[name]

@@ -1,60 +1,81 @@
 {
-    "appName": "แอปสคูล",
-    "menu": {
-      "dashboard": "แดชบอร์ด",
-      "settings": "ตั้งค่า",
-      "profile": "โปรไฟล์",
-      "account": "บัญชี",
-      "about": "เกี่ยวกับ",
-      "classroom": "จัดการห้องเรียน",
-      "class_levels": "ระดับชั้น",
-      "rooms": "ห้องเรียน",
-      "subjects": "วิชา",
-      "schoolBank": "ธนาคารโรงเรียน",
-      "myAccount": "บัญชีของฉัน",
-      "usersAccount": "บัญชีผู้ใช้",
-      "calculateInterest": "คำนวณดอกเบี้ย"
-    },
-    "bank": {
-        "my_account": "บัญชีธนาคารของฉัน",
-        "balance": "ยอดคงเหลือ",
-        "deposit": "ฝากเงิน",
-        "withdraw": "ถอนเงิน",
-        "amount": "จำนวนเงิน",
-        "description": "คำอธิบาย",
-        "description_optional": "คำอธิบาย (ไม่จำเป็น)",
-        "submit_deposit": "ยืนยันการฝากเงิน",
-        "submit_withdraw": "ยืนยันการถอนเงิน",
-        "transaction_history": "ประวัติธุรกรรม",
-        "date": "วันที่",
-        "type": "ประเภท",
-        "print_passbook": "พิมพ์สมุดบัญชี"
-      },
-      "rooms": {
-        "manage": "จัดการห้องเรียน",
-        "create": "สร้างห้องเรียนใหม่",
-        "id": "รหัส",
-        "class_level": "ระดับชั้น",
-        "name_en": "ชื่อห้องเรียน (EN)",
-        "name_th": "ชื่อห้องเรียน (TH)",
-        "advisors": "ครูที่ปรึกษา",
-        "actions": "การจัดการ",
-        "empty": "ไม่พบข้อมูลห้องเรียน"
-      },
-    "message": {
-    "loggedIn": "คุณเข้าสู่ระบบแล้ว!"
-  },
-  "buttons": {
-    "teachersBulkEdit": "แก้ไขครูหลายคน",
-    "importUsers": "นำเข้าผู้ใช้ (CSV)",
-    "exportExcel": "ส่งออก Excel",
-    "exportWord": "ส่งออก Word"
-  },
-  "footer": {
-    "version": "เวอร์ชัน",
-    "privacy": "นโยบายความเป็นส่วนตัว",
-    "terms": "เงื่อนไขการให้บริการ"
-  },
+"appName": "แอปสคูล",
+
+"menu.dashboard": "แดชบอร์ด",
+"menu.settings": "ตั้งค่า",
+"menu.profile": "โปรไฟล์",
+"menu.account": "บัญชี",
+"menu.about": "เกี่ยวกับ",
+"menu.classroom": "จัดการห้องเรียน",
+"menu.class_levels": "ระดับชั้น",
+"menu.rooms": "ห้องเรียน",
+"menu.subjects": "วิชา",
+"menu.schoolBank": "ธนาคารโรงเรียน",
+"menu.myAccount": "บัญชีของฉัน",
+"menu.usersAccount": "บัญชีผู้ใช้",
+"menu.calculateInterest": "คำนวณดอกเบี้ย",
+
+"menu.import_export": "นำเข้า / ส่งออก",
+"menu.import_users": "นำเข้าผู้ใช้ (csv)",
+"menu.export_users": "ส่งออกผู้ใช้ (excel)",
+"menu.export_users_word": "ส่งออกผู้ใช้ (word)",
+"menu.import_students": "นำเข้านักเรียน",
+"menu.import_teachers": "นำเข้าครู",
+"menu.import_subjects": "นำเข้ารายวิชา",
+"menu.import_bank_accounts": "นำเข้าบัญชีธนาคาร",
+"menu.assign_room": "กำหนดห้องเรียน",
+
+"menu.manage_student": "จัดการนักเรียน",
+"menu.all_students": "นักเรียนทั้งหมด",
+"menu.add_student": "เพิ่มนักเรียน",
+"menu.delete_students": "ลบนักเรียน",
+
+"bank.my_account": "เจ้าของบัญชีธนาคาร",
+"bank.balance": "ยอดคงเหลือ",
+"bank.deposit": "ฝากเงิน",
+"bank.withdraw": "ถอนเงิน",
+"bank.amount": "จำนวนเงิน",
+"bank.description": "คำอธิบาย",
+"bank.description_optional": "คำอธิบาย (ไม่จำเป็น)",
+"bank.submit_deposit": "ยืนยันการฝากเงิน",
+"bank.submit_withdraw": "ยืนยันการถอนเงิน",
+"bank.transaction_history": "ประวัติธุรกรรม",
+"bank.date": "วันที่",
+"bank.type": "ประเภท",
+"bank.print_passbook": "พิมพ์สมุดบัญชี",
+"bank.currency": "บาท",
+
+"rooms.manage": "จัดการห้องเรียน",
+"rooms.create": "สร้างห้องเรียนใหม่",
+"rooms.id": "รหัส",
+"rooms.class_level": "ระดับชั้น",
+"rooms.name_en": "ชื่อห้องเรียน (EN)",
+"rooms.name_th": "ชื่อห้องเรียน (TH)",
+"rooms.advisors": "ครูที่ปรึกษา",
+"rooms.actions": "การจัดการ",
+"rooms.empty": "ไม่พบข้อมูลห้องเรียน",
+
+"message.loggedIn": "คุณเข้าสู่ระบบแล้ว!",
+
+"buttons.teachersBulkEdit": "แก้ไขครูหลายคน",
+"buttons.importUsers": "นำเข้าผู้ใช้ (CSV)",
+"buttons.exportExcel": "ส่งออก Excel",
+"buttons.exportWord": "ส่งออก Word",
+
+"gender.male": "ชาย",
+"gender.female": "หญิง",
+"gender.other": "อื่น ๆ",
+
+"chart.usersByRole": "ผู้ใช้ตามบทบาท",
+
+"birthday_label": "วันเกิด",
+"gender_label": "เพศ",
+"select_gender": "เลือกเพศ",
+
+"footer.version": "เวอร์ชัน",
+"footer.privacy": "นโยบายความเป็นส่วนตัว",
+"footer.terms": "เงื่อนไขการให้บริการ",
+
 "language": "ภาษา",
 "dark": "โหมดมืด",
 "light": "โหมดสว่าง",
@@ -93,9 +114,11 @@
 "csv_file_format_note": "เฉพาะไฟล์ CSV ขนาดไม่เกิน 2MB",
 "csv_format_guidelines_title": "แนวทางการจัดรูปแบบไฟล์ CSV",
 "csv_ensure_header_row": "ตรวจสอบให้แน่ใจว่าไฟล์ CSV ของคุณมีแถวหัวกระดาษ (header row) ที่มีชื่อคอลัมน์ต่อไปนี้ (ตรงตามตัวพิมพ์ใหญ่-เล็ก):",
-"csv_column_name": "คอลัมน์ที่ 1",
-"csv_column_email": "คอลัมน์ที่ 2",
-"csv_column_role": "คอลัมน์ที่ 3",
+"csv_column_student_id": "คอลัมน์ที่ 1",
+"csv_column_name_th": "คอลัมน์ที่ 2",
+"csv_column_surname_th": "คอลัมน์ที่ 3",
+"csv_column_email": "คอลัมน์ที่ 4",
+"csv_column_role": "คอลัมน์ที่ 5",
 "required_field": "จำเป็น",
 "unique_field": "ต้องไม่ซ้ำกัน",
 "optional_field": "ไม่บังคับ",
@@ -112,5 +135,8 @@
 "action": "การดำเนินการ",
 "created_at": "วันที่สร้าง",
 "edit": "แก้ไข",
-"delete": "ลบ"
+"delete": "ลบ",
+"edit_profile": "แก้ไขโปรไฟล์",
+"id": "รหัส"
+
 }

@@ -11,14 +11,14 @@ enum UserRole: int
     public function label(): string
     {
         return match($this) {
-            self::SuperAdmin => 'Super Admin',
+            self::SuperAdmin => 'SuperAdmin',
             self::Admin      => 'Admin',
             self::Teacher    => 'Teacher',
             self::Student    => 'Student',
         };
     }
-    /** 
-     * Convert a string like "admin" into the matching enum 
+    /**
+     * Convert a string like "admin" into the matching enum
      */
     public static function fromName(string $name): self
     {

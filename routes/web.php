@@ -12,6 +12,10 @@ use App\Http\Controllers\UserImportController;
 use App\Http\Controllers\UserExportController;
 use App\Http\Controllers\DocumentExportController;
 use App\Http\Controllers\TeacherBulkEditController;
+use App\Http\Controllers\AssignRoomController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentExportController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -27,9 +31,9 @@ Route::get('/student', [HomeController::class, 'student'])->name('students');
 //Route::get('/dashboard', function () {
 //    return Inertia::render('Dashboard');
 //})->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::get('/language/{locale}', function ($locale) {
     if (array_key_exists($locale, config('app.available_locales', []))) {
@@ -65,11 +69,15 @@ Route::middleware('auth')->group(function () {
 // Excel Export Routes for Users
     Route::get('/users/export/excel', [UserExportController::class, 'exportExcel'])->name('users.export.excel');
 // Ms-word Export
-Route::get('/export/users/word', [DocumentExportController::class, 'exportUsersToWord'])->name('users.export.word');
+    Route::get('/export/users/word', [DocumentExportController::class, 'exportUsersToWord'])->name('users.export.word');
 
 // TeacherBulkEdit for table teacher
     Route::get('/teachers/bulk-edit', [TeacherBulkEditController::class, 'edit'])->name('teachers.bulk-edit.form');
     Route::put('/teachers/bulk-update', [TeacherBulkEditController::class, 'update'])->name('teachers.bulk-update.submit');
+
+// Assign Room กำหนดห้องเรียนให้นักเรียน
+    Route::get('/assign-room', [AssignRoomController::class, 'index'])->name('assign-room.index');
+    Route::post('/assign-room', [AssignRoomController::class, 'assign'])->name('assign-room.assign');
 
 });
 
@@ -98,7 +106,7 @@ Route::middleware('auth')->group(function () {
      ->name('bank.user')
      ->middleware('permission:read banks');
     // Bank account routes
-    Route::get('/bank/{user_id}', [BankAccountController::class, 'show'])
+    Route::get('/bank/{student_id}', [BankAccountController::class, 'show'])
          ->name('bank.account');
     Route::post('/bank/deposit', [BankAccountController::class, 'deposit'])
          ->name('bank.deposit');
@@ -109,9 +117,9 @@ Route::middleware('auth')->group(function () {
 
     });
 
-    Route::get('/mybank/{user_id}', [BankAccountController::class, 'showme'])
+    Route::get('/mybank/{student_id}', [BankAccountController::class, 'showme'])
          ->name('bank.myaccount')->middleware('permission:view banks');
-    Route::get('/bank/passbook/{user_id}', [BankAccountController::class, 'passbookPdf'])
+    Route::get('/bank/passbook/{student_id}', [BankAccountController::class, 'passbookPdf'])
          ->name('bank.passbook.pdf');
 
 });
@@ -155,5 +163,19 @@ Route::middleware('auth')->group(function () {
 });
 
 // ...End for Permission
+
+Route::prefix('students')->middleware(['auth'])->group(function () {
+
+    Route::get('/', [StudentController::class, 'index'])->name('students.index');
+    Route::get('/create', [StudentController::class, 'create'])->name('students.create');
+    Route::post('/', [StudentController::class, 'store'])->name('students.store');
+
+    Route::get('/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+
+    Route::get('/export/excel', [StudentExportController::class, 'exportExcel'])->name('students.export.excel');
+    Route::get('/export/pdf', [StudentExportController::class, 'exportPdf'])->name('students.export.pdf');
+});
+
+
 
 require __DIR__.'/auth.php';

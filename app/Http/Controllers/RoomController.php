@@ -16,7 +16,7 @@ class RoomController extends Controller
         $rooms = Room::with('classLevel', 'advisors') // Eager load the classLevel relationship
             ->orderBy('class_level_id')
             ->orderBy('name_room_en') // Optional: good for consistent ordering
-            ->paginate(10);
+            ->paginate(20);
 
         return Inertia::render('Rooms/Index', [
             'rooms' => $rooms,

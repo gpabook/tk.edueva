@@ -1,27 +1,34 @@
 <?php
 
-// app/Http/Controllers/DashboardController.php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 use App\Enums\UserRole;
+use App\Models\User;
+use Illuminate\Support\Collection;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-        public function index()
+    public function index()
     {
-        $user = Auth::user();
+        $roleCountsRaw = User::query()
+        ->toBase()
+        ->select('role')
+        ->selectRaw('COUNT(*) as count')
+        ->groupBy('role')
+        ->get();
 
-        return Inertia::render('Dashboard', [
-            // send exactly the bits your Vue page needs
-            'user' => [
-                'id'         => $user->id,
-                'name'       => $user->name,
-                'role'       => $user->role->name,    // "SuperAdmin", "Admin", etc.
-                'role_label' => $user->role->label(), // "Super Admin", "Admin", etc.
-            ],
-        ]);
+    $roleCountsMap = $roleCountsRaw->pluck('count', 'role');
+
+    $roleChart = collect(UserRole::cases())->map(function ($roleEnum) use ($roleCountsMap) {
+        return [
+            'label' => $roleEnum->label(),
+            'count' => $roleCountsMap[$roleEnum->value] ?? 0,
+        ];
+    });
+
+    return Inertia::render('Dashboard', [
+        'roleChart' => $roleChart,
+    ]);
     }
 }

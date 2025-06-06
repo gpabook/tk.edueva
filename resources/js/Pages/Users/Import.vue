@@ -143,7 +143,9 @@ const formattedImportErrors = computed(() => {
                             <h4 class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300">{{ $t('csv_format_guidelines_title') }}</h4>
                             <p class="mb-1 text-sm text-gray-600 dark:text-gray-400">{{ $t('csv_ensure_header_row') }}</p>
                             <ul class="space-y-1 text-sm text-gray-600 list-disc ps-5 dark:text-gray-400">
-                                <li>{{ $t('csv_column_name') }} <code class="px-1 text-xs bg-gray-200 rounded dark:bg-gray-600">name</code> ({{ $t('required_field') }})</li>
+                                <li>{{ $t('csv_column_student_id') }} <code class="px-1 text-xs bg-gray-200 rounded dark:bg-gray-600">student_id</code> ({{ $t('required_field') }})</li>
+                                <li>{{ $t('csv_column_name_th') }} <code class="px-1 text-xs bg-gray-200 rounded dark:bg-gray-600">name_th</code> ({{ $t('required_field') }})</li>
+                                <li>{{ $t('csv_column_surname_th') }} <code class="px-1 text-xs bg-gray-200 rounded dark:bg-gray-600">surname_th</code> ({{ $t('required_field') }})</li>
                                 <li>{{ $t('csv_column_email') }} <code class="px-1 text-xs bg-gray-200 rounded dark:bg-gray-600">email</code> ({{ $t('required_field') }}, {{ $t('unique_field') }})</li>
                                 <li>{{ $t('csv_column_role') }} <code class="px-1 text-xs bg-gray-200 rounded dark:bg-gray-600">role</code> ({{ $t('optional_field') }}, {{ $t('default_role_note', {defaultRole: 'student'}) }})</li>
                                 </ul>
