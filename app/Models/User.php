@@ -11,6 +11,8 @@ use App\Enums\UserRole; // Assuming you have this Enum
 use App\Models\BankAccount; // Import BankAccount model
 use App\Models\ClassLevel;
 use App\Models\Room;
+use App\Models\Guardian;
+use Ramsey\Uuid\Guid\Guid;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -37,7 +39,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'student_id',
+        'national_id',
         'room_id',
+        'prefix_th',
         'name',
 
         'name_th',
@@ -81,12 +85,10 @@ class User extends Authenticatable
         return [
         'email_verified_at' => 'datetime', // Casts to a Carbon date/time object
         'password'          => 'hashed',   // Automatically hashes passwords when set (Laravel 10+)
-        //'role'              => UserRole::class, // Casts 'role' to the UserRole Enum
         'role'              => \App\Enums\UserRole::class,
         'status'            => 'integer',  // Casts 'status' to an integer
     ];
 }
-
 
     protected static function booted()
 {
@@ -95,7 +97,6 @@ class User extends Authenticatable
     $user->syncRoles([$user->role->name]);
   });
 }
-
 
         // Optionally, an accessor for full URL:
 
@@ -130,6 +131,7 @@ class User extends Authenticatable
         );
     }
 
+
 // นักเรียนอยู่ในห้องไหน
 public function room()
 {
@@ -159,9 +161,21 @@ public function currentRoom()
     return $this->belongsToMany(Room::class, 'room_student')
         ->wherePivotNull('left_at')
         ->withPivot(['assigned_at', 'left_at'])
-        ->with('classLevel');
+        ->with('classLevel')
+        ->orderByDesc('assigned_at')
+        ->limit(1);
 }
 
+public function guardians()
+{
+    return $this->hasMany(Guardian::class);
+}
+
+// ถ้า 1 นักเรียนมี 1 ผู้ปกครอง (One-to-One)
+public function guardian()
+{
+    return $this->hasOne(Guardian::class);
+}
 
 
 // --- end User Model ------

@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
-use App\Models\ClassLevel; // For fetching class levels for dropdowns
-use App\Models\User;      // For fetching users (teachers/advisors) - will be used when advisor logic is added
+use App\Models\ClassLevel;
+use App\Models\User;
+use App\Models\Guardian;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Validation\Rule; // For more complex validation rules
+use App\Enums\UserRole;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+
 
 class StudentController extends Controller
 {
@@ -15,13 +19,23 @@ class StudentController extends Controller
     {
         $students = User::where('role', 4)
             ->with(['currentRoom.classLevel'])
-            ->when($request->search, fn ($q) =>
-                $q->where('name_th', 'like', "%{$request->search}%")
-                  ->orWhere('student_id', 'like', "%{$request->search}%"))
-            ->when($request->class_level_id, fn ($q) =>
-                $q->whereHas('currentRoom', fn ($r) => $r->where('class_level_id', $request->class_level_id)))
-            ->when($request->room_id, fn ($q) =>
-                $q->whereHas('currentRoom', fn ($r) => $r->where('id', $request->room_id)))
+            ->when($request->search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name_th', 'like', "%{$search}%")
+                      ->orWhere('surname_th', 'like', "%{$search}%")
+                      ->orWhere('student_id', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->class_level_id, function ($query, $classLevelId) {
+                $query->whereHas('currentRoom', function ($q) use ($classLevelId) {
+                    $q->where('rooms.class_level_id', $classLevelId);
+                });
+            })
+            ->when($request->room_id, function ($query, $roomId) {
+                $query->whereHas('currentRoom', function ($q) use ($roomId) {
+                    $q->where('rooms.id', $roomId);
+                });
+            })
             ->paginate(10)
             ->withQueryString();
 
@@ -36,19 +50,30 @@ class StudentController extends Controller
         ]);
     }
 
-    public function edit($id)
-   {
-    $student = User::findOrFail($id);
 
-    // ตรวจสอบว่าเป็น student จริง ๆ
-    if ($student->role !== \App\Enums\UserRole::Student) {
-        abort(403, 'Access denied');
+    public function edit($id)
+    {
+        // โหลด student พร้อม currentRoom, classLevel และ guardians
+        $student = User::with([
+            'currentRoom.classLevel',
+            'guardian', // หากเป็น one-to-one (hasOne)
+            // หรือ 'guardians' หากใช้ hasMany
+        ])->findOrFail($id);
+        // ตรวจสอบ role ว่าเป็นนักเรียน
+        if ($student->role !== \App\Enums\UserRole::Student) {
+            abort(403, 'Access denied');
+        }
+
+        // โหลดห้องเรียนทั้งหมดไว้สำหรับแสดงใน dropdown
+        $rooms = Room::with('classLevel')->get();
+
+        return Inertia::render('Students/Edit', [
+            'student' => $student,
+            'rooms' => $rooms,
+            'guardian' => $student->guardian ?? new Guardian(), // 👈 ป้องกัน null
+        ]);
     }
 
-    return Inertia::render('Students/Edit', [
-        'student' => $student,
-    ]);
-   }
 
    public function create()
    {
@@ -75,7 +100,7 @@ class StudentController extends Controller
            'name_en'      => 'nullable|string|max:100',
            'surname_en'   => 'nullable|string|max:100',
            'email'        => 'nullable|email|unique:users,email',
-           'gender'       => 'nullable|in:M,F',
+           'gender'       => 'nullable|in:male,female,other',
            'birthday'     => 'nullable|date',
            'room_id'      => 'nullable|exists:rooms,id',
        ]);
@@ -95,35 +120,87 @@ class StudentController extends Controller
    }
 
 
-    public function update(Request $request, $id)
+   public function update(Request $request, $id)
    {
+       // ดึงข้อมูลนักเรียนจากฐานข้อมูล
        $student = User::findOrFail($id);
 
-       if ($student->role !== \App\Enums\UserRole::Student) {
+       if ($student->role !== UserRole::Student) {
            abort(403, 'Access denied');
        }
 
-       $validated = $request->validate([
+       // 👉 ล้างขีดออกจาก national_id ก่อน validate
+       $request->merge([
+           'national_id' => $request->national_id
+               ? str_replace('-', '', $request->national_id)
+               : null,
+       ]);
+
+       // ✅ ตรวจสอบข้อมูลนักเรียน
+       $validatedStudent = $request->validate([
            'student_id' => [
-               'required', 'string',
-               Rule::unique('users', 'student_id')->ignore($student->id)
+               'required',
+               'string',
+               Rule::unique('users', 'student_id')->ignore($student->id),
            ],
+           'prefix_th' => ['nullable', Rule::in(['ด.ช.', 'ด.ญ.', 'นาย', 'นางสาว'])],
            'name_th' => 'required|string|max:100',
            'surname_th' => 'required|string|max:100',
            'name_en' => 'nullable|string|max:100',
            'surname_en' => 'nullable|string|max:100',
-           'email' => [
-               'nullable', 'email',
-               Rule::unique('users', 'email')->ignore($student->id)
+           'national_id' => [
+               'nullable',
+               'digits:13',
+               Rule::unique('users', 'national_id')->ignore($student->id),
            ],
-           'gender' => 'nullable|in:M,F',
+           'email' => [
+               'nullable',
+               'email',
+               Rule::unique('users', 'email')->ignore($student->id),
+           ],
+           'gender' => 'nullable|in:male,female',
            'birthday' => 'nullable|date',
            'room_id' => 'nullable|exists:rooms,id',
        ]);
 
-       $student->update($validated);
+       // ✅ ตรวจสอบข้อมูลผู้ปกครอง
+       $validatedGuardian = $request->validate([
+           'guardian_prefix_th' => ['nullable', Rule::in(['นาย', 'นาง', 'นางสาว'])],
+           'guardian_name_th' => 'nullable|string|max:100',
+           'guardian_surname_th' => 'nullable|string|max:100',
+           'guardian_phone_1' => 'nullable|string|max:20',
+           'guardian_phone_2' => 'nullable|string|max:20',
+           'guardian_relationship' => 'nullable|string|max:100',
+       ]);
+
+       DB::transaction(function () use ($student, $validatedStudent, $validatedGuardian) {
+           // ⬆ บันทึกนักเรียน
+           $student->update($validatedStudent);
+
+           // ⬆ บันทึกหรืออัปเดตผู้ปกครอง (อิง user_id)
+           if (
+            $validatedGuardian['guardian_name_th'] ||
+            $validatedGuardian['guardian_surname_th'] ||
+            $validatedGuardian['guardian_phone_1']
+        ) {
+            Guardian::updateOrCreate(
+                ['user_id' => $student->id],
+                [
+                    'prefix_th' => $validatedGuardian['guardian_prefix_th'] ?? null,
+                    'name_th' => $validatedGuardian['guardian_name_th'] ?? null,
+                    'surname_th' => $validatedGuardian['guardian_surname_th'] ?? null,
+                    'phone_1' => $validatedGuardian['guardian_phone_1'] ?? null,
+                    'phone_2' => $validatedGuardian['guardian_phone_2'] ?? null,
+                    'relationship' => $validatedGuardian['guardian_relationship'] ?? null,
+                ]
+            );
+        }
+       });
 
        return redirect()->route('students.index')->with('success', 'บันทึกการแก้ไขแล้ว');
    }
+
+
+
 
 }

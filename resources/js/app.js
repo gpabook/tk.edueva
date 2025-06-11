@@ -1,7 +1,9 @@
 import 'flowbite'; // For Flowbite's JS components
 import '../css/app.css'; // Your main application CSS
 import './bootstrap'; // Laravel's bootstrap.js (Axios, Echo, etc.)
-import 'vue-toast-notification/dist/theme-default.css'; // Toast styles
+//import 'vue-toast-notification/dist/theme-default.css'; // Toast styles
+import 'vue-toast-notification/dist/theme-sugar.css';
+
 
 import { createApp, h } from 'vue';
 import { createInertiaApp, Link, Head } from '@inertiajs/vue3';

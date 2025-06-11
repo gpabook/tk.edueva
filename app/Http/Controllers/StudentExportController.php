@@ -6,6 +6,10 @@ use TCPDF;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+use App\Exports\StudentsExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Room;
+
 class StudentExportController extends Controller
 {
     public function exportPdf(Request $request)
@@ -64,5 +68,23 @@ class StudentExportController extends Controller
         $pdf->writeHTML($html, true, false, true, false, '');
 
         return response($pdf->Output('students.pdf', 'S'))->header('Content-Type', 'application/pdf');
+    }
+
+    public function exportExcelGuardians(Request $request)
+    {
+        $timestamp = now()->format('Ymd_His');
+
+        $filename = "students_export_{$timestamp}.xlsx";
+
+        // หากเลือกห้องเรียน → เพิ่มชื่อห้องลงในชื่อไฟล์
+        if ($roomId = $request->input('room_id')) {
+            $room = Room::find($roomId);
+            if ($room) {
+                $roomName = preg_replace('/[\/\\\\]/', '_', $room->name_room_th);
+                $filename = "students_{$roomName}_{$timestamp}.xlsx";
+            }
+        }
+
+        return Excel::download(new StudentsExport($request), $filename);
     }
 }

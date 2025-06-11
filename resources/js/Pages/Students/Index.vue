@@ -1,9 +1,23 @@
 <script setup>
-import { Head, Link, useForm, router } from '@inertiajs/vue3'
+import { Head, usePage, Link, router } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import { ref, watch } from 'vue'
-import debounce from 'lodash/debounce'
+import { reactive, watch, onMounted } from 'vue'
+import { debounce } from 'lodash'
+
+import { useToast } from 'vue-toast-notification'
+
+const page = usePage()
+const toast = useToast()
+
+onMounted(() => {
+  const successMessage = page.props.flash?.success
+  if (successMessage) {
+    toast.success(successMessage, {
+      position: 'top-right',
+      duration: 3000,
+    })
+  }
+})
 
 const props = defineProps({
   students: Object,
@@ -12,25 +26,35 @@ const props = defineProps({
   filters: Object,
 })
 
-const filters = ref({
+// ✅ ใช้ reactive เพื่อให้ watch ทำงานกับ object
+const filters = reactive({
   search: props.filters.search || '',
   class_level_id: props.filters.class_level_id || '',
   room_id: props.filters.room_id || '',
 })
 
+// ✅ debounce router.get สำหรับค้นหา
 const searchStudents = debounce(() => {
-  router.get(route('students.index'), filters.value, {
+  router.get(route('students.index'), filters, {
     preserveScroll: true,
     preserveState: true,
     replace: true,
   })
 }, 400)
 
-watch(filters, searchStudents)
+// ✅ ใช้ deep watch
+watch(
+  () => ({ ...filters }),
+  () => {
+    searchStudents()
+  },
+  { deep: true }
+)
 </script>
 
 <template>
   <Head title="All Students" />
+
   <AuthenticatedLayout>
     <template #header>
       <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -47,12 +71,14 @@ watch(filters, searchStudents)
           placeholder="Search..."
           class="p-2 border rounded dark:bg-gray-700 dark:text-white"
         />
+
         <select v-model="filters.class_level_id" class="p-2 border rounded dark:bg-gray-700 dark:text-white">
           <option value="">All Class Levels</option>
           <option v-for="level in props.classLevels" :key="level.id" :value="level.id">
             {{ level.name_th }}
           </option>
         </select>
+
         <select v-model="filters.room_id" class="p-2 border rounded dark:bg-gray-700 dark:text-white">
           <option value="">All Rooms</option>
           <option v-for="room in props.rooms" :key="room.id" :value="room.id">
@@ -60,10 +86,23 @@ watch(filters, searchStudents)
           </option>
         </select>
 
-        <a :href="route('students.export.excel', filters)" class="px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700">
+        <a
+          :href="route('students.export.excel', filters)"
+          class="px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700"
+        >
           Export Excel
         </a>
-        <a :href="route('students.export.pdf', filters)" class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700">
+        <a
+  :href="route('students.export.excel', filters)"
+  class="px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700"
+>
+  Export Excel guardians
+</a>
+
+        <a
+          :href="route('students.export.pdf', filters)"
+          class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+        >
           Export PDF
         </a>
       </div>
@@ -80,14 +119,25 @@ watch(filters, searchStudents)
             </tr>
           </thead>
           <tbody>
-            <tr v-for="student in props.students.data" :key="student.id" class="hover:bg-gray-50 dark:hover:bg-gray-700">
+            <tr
+              v-for="student in props.students.data"
+              :key="student.id"
+              class="hover:bg-gray-50 dark:hover:bg-gray-700"
+            >
               <td class="px-4 py-2">{{ student.student_id }}</td>
               <td class="px-4 py-2">{{ student.name_th }} {{ student.surname_th }}</td>
               <td class="px-4 py-2">
-                {{ student.current_room?.[0]?.class_level?.name_th }} {{ student.current_room?.[0]?.name_room_th }}
+                {{
+                  student.current_room?.[0]?.class_level?.name_th
+                }} {{ student.current_room?.[0]?.name_room_th }}
               </td>
               <td class="px-4 py-2">
-                <Link :href="route('students.edit', student.id)" class="text-blue-600 hover:underline">Edit</Link>
+                <Link
+                  :href="route('students.edit', student.id)"
+                  class="text-blue-600 hover:underline"
+                >
+                  Edit
+                </Link>
               </td>
             </tr>
           </tbody>

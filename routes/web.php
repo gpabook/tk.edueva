@@ -10,6 +10,7 @@ use App\Http\Controllers\ClassLevelController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserImportController;
 use App\Http\Controllers\UserExportController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\DocumentExportController;
 use App\Http\Controllers\TeacherBulkEditController;
 use App\Http\Controllers\AssignRoomController;
@@ -20,6 +21,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
+use App\Exports\StudentsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Inertia\Inertia;
 
 //Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -63,15 +67,25 @@ Route::middleware('auth')->group(function () {
     Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
     Route::delete('/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy'); // Also ensure path consistency, e.g., '/rooms/{room}'
 
-// CSV Import Routes for Users
+
+    // แสดงฟอร์มสร้างผู้ใช้ใหม่
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+
+    // CSV Import Routes for Users
     Route::get('/users/import', [UserImportController::class, 'create'])->name('users.import.create');
     Route::post('/users/import', [UserImportController::class, 'store'])->name('users.import.store');
-// Excel Export Routes for Users
+    // Excel Export Routes for Users
     Route::get('/users/export/excel', [UserExportController::class, 'exportExcel'])->name('users.export.excel');
-// Ms-word Export
+    // Ms-word Export
     Route::get('/export/users/word', [DocumentExportController::class, 'exportUsersToWord'])->name('users.export.word');
 
-// TeacherBulkEdit for table teacher
+    // TeacherBulkEdit for table teacher
     Route::get('/teachers/bulk-edit', [TeacherBulkEditController::class, 'edit'])->name('teachers.bulk-edit.form');
     Route::put('/teachers/bulk-update', [TeacherBulkEditController::class, 'update'])->name('teachers.bulk-update.submit');
 
@@ -122,6 +136,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/bank/passbook/{student_id}', [BankAccountController::class, 'passbookPdf'])
          ->name('bank.passbook.pdf');
 
+    Route::get('/passbook/select/{student_id}', [BankAccountController::class, 'selectPassbookLines'])->name('passbook.select');
+    Route::get('/passbook/custom/preview', [BankAccountController::class, 'customPassbookPdf'])
+    ->name('passbook.custom.preview');
+
 });
 
 // Start Routes for managing roles
@@ -167,12 +185,19 @@ Route::middleware('auth')->group(function () {
 Route::prefix('students')->middleware(['auth'])->group(function () {
 
     Route::get('/', [StudentController::class, 'index'])->name('students.index');
+
     Route::get('/create', [StudentController::class, 'create'])->name('students.create');
     Route::post('/', [StudentController::class, 'store'])->name('students.store');
 
     Route::get('/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+    Route::put('/{id}', [StudentController::class, 'update'])->name('students.update');
 
-    Route::get('/export/excel', [StudentExportController::class, 'exportExcel'])->name('students.export.excel');
+
+    //Route::get('/export/excel', [StudentExportController::class, 'exportExcel'])->name('students.export.excel');
+    Route::get('/students/export', [StudentExportController::class, 'exportExcelGuardians'])
+    ->name('students.export.excel');
+
+
     Route::get('/export/pdf', [StudentExportController::class, 'exportPdf'])->name('students.export.pdf');
 });
 

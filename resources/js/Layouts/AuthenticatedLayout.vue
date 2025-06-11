@@ -167,6 +167,48 @@
                     {{ t('menu.account') }}</a></li>
               </ul>
             </li>
+<!-- Dropdown: Manage Users จัดการผู้ใช้ -->
+<li>
+  <button
+    @click="toggleDropdown('userManagement')"
+    class="flex items-center w-full p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+  >
+    <span class="mr-3 material-icons">manage_accounts</span>
+    <span v-if="!isSidebarCollapsed">{{ $t('menu.user_management') || 'จัดการผู้ใช้' }}</span>
+    <svg
+      v-if="!isSidebarCollapsed"
+      :class="dropdowns.userManagement ? 'rotate-90' : ''"
+      class="w-4 h-4 ml-auto transition-transform"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    </svg>
+  </button>
+
+  <ul v-show="dropdowns.userManagement" class="pl-10 mt-1 space-y-1" v-if="!isSidebarCollapsed">
+    <li v-if="route().has('users.index')">
+      <Link :href="route('users.index')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+        <span class="text-base text-gray-500">></span>
+        {{ $t('menu.user_management') || 'จัดการผู้ใช้'}}
+      </Link>
+    </li>
+    <li v-if="route().has('roles.index')">
+      <Link :href="route('roles.index')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+        <span class="text-base text-gray-500">></span>
+        {{ $t('roles') }}
+      </Link>
+    </li>
+    <li v-if="route().has('permissions.index')">
+      <Link :href="route('permissions.index')" class="block py-1 text-sm hover:text-gray-800 dark:hover:text-gray-300">
+        <span class="text-base text-gray-500">></span>
+        {{ $t('permissions') }}
+      </Link>
+    </li>
+  </ul>
+</li>
+
 <!-- Dropdown: Manage Classroom -->
 <li>
   <button
@@ -481,6 +523,7 @@ const dropdowns = reactive({
     classroom: false,  // drop down menu ClassRoom
     schoolBank: false,  // drop down menu SchoolBank
     profile: false,
+    userManagement: false,
 })
 function toggleDropdown(name) {
   dropdowns[name] = !dropdowns[name]

@@ -17,6 +17,16 @@ enum UserRole: int
             self::Student    => 'Student',
         };
     }
+
+    public function key(): string
+    {
+        return match ($this) {
+            self::SuperAdmin => 'superadmin',
+            self::Admin      => 'admin',
+            self::Teacher    => 'teacher',
+            self::Student    => 'student',
+        };
+    }
     /**
      * Convert a string like "admin" into the matching enum
      */
